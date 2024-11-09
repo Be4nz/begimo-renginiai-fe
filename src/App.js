@@ -1,25 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import RunList from './pages/RunList';
+import RunView from './pages/RunView';
+import UserProfile from './pages/UserProfile';
+import CommentList from './pages/CommentList';
+import NavigationBar from './components/navigation/NavigationBar';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className='App'>
+			<Router>
+				<NavigationBar />
+				<Routes>
+					<Route path='/login' element={<Login />} />
+					<Route path='/register' element={<Register />} />
+					<Route path='/run-list' element={<RunList />} />
+					<Route path='/run/:id' element={<RunView />} />
+					<Route path='/user/:id' element={<UserProfile />} />
+					<Route path='/run/:id/comments' element={<CommentList />} />
+					<Route path='*' element={<Navigate to={'/login'} replace />} />
+				</Routes>
+			</Router>
+		</div>
+	);
 }
 
 export default App;
