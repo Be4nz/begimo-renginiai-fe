@@ -15,6 +15,8 @@ import EditRun from './pages/EditRun';
 import InviteForm from './pages/InviteForm';
 import InviteList from './pages/InviteList';
 import SentInviteList from './pages/SentInviteList';
+import MakeCommentForm from './pages/MakeCommentForm';
+import UpdateCommentForm from './pages/UpdateCommentForm';
 
 function App() {
 	return (
@@ -23,6 +25,8 @@ function App() {
 				<NavigationBar />
 				<Routes>
 					<Route path='/login' element={<Login />} />
+					<Route path='/make-comment' element={<MakeCommentForm />} />
+					<Route path='/update-comment' element={<UpdateCommentForm />} />
 					<Route path='/changepassword' element={<ChangePassword />} />
 					<Route path='/create-run/:id' element={<CreateRun />} />
 					<Route path='/register' element={<Register />} />

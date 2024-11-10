@@ -71,7 +71,7 @@ function InviteForm() {
 					sx={{ mb: 2 }}
 				/>
 				<Button variant='contained' color='primary' fullWidth onClick={handleSubmit}>
-					Siūsti pakvietimą
+					Siųsti pakvietimą
 				</Button>
 			</Box>
 		</Box>
