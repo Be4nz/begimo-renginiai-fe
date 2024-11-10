@@ -5,7 +5,9 @@ import {
     Card,
     CardContent,
     TextField,
-    Button
+    Button,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,10 +49,43 @@ const CreateRun = () => {
                         <Box sx={{ mb: 3 }}>
                             <TextField
                                 fullWidth
+                                label="Aprašymas"
+                                variant="outlined"
+                                name="description"
+                                multiline
+                                rows={3}
+                                required
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
                                 label="Data"
                                 variant="outlined"
                                 name="date"
                                 type="date"
+                                InputLabelProps={{ shrink: true }}
+                                required
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Pradžios laikas"
+                                variant="outlined"
+                                name="startTime"
+                                type="time"
+                                InputLabelProps={{ shrink: true }}
+                                required
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Pabaigos laikas"
+                                variant="outlined"
+                                name="endTime"
+                                type="time"
                                 InputLabelProps={{ shrink: true }}
                                 required
                             />
@@ -72,6 +107,56 @@ const CreateRun = () => {
                                 variant="outlined"
                                 name="location"
                                 required
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Internetinio puslapio nuoroda"
+                                variant="outlined"
+                                name="website"
+                                type="url"
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Facebook nuoroda"
+                                variant="outlined"
+                                name="facebookLink"
+                                type="url"
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Adresas"
+                                variant="outlined"
+                                name="address"
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <FormControlLabel
+                                control={<Checkbox name="private" />}
+                                label="Privatus"
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Nuotrauka (URL)"
+                                variant="outlined"
+                                name="photo"
+                                type="url"
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <TextField
+                                fullWidth
+                                label="Koordinatė"
+                                variant="outlined"
+                                name="coordinate"
+                                type="text"
                             />
                         </Box>
                         <Box sx={{ display: 'flex', gap: 2 }}>

@@ -4,5 +4,7 @@ html {
 	margin: 0;
 	padding: 0;
 	font-family: 'Inter', sans-serif;
-	overflow: hidden;
+	/* sito reikia, kad sukurt renginius nes labai ivedimu */
+	/* overflow: hidden; */ 
+	
 }
