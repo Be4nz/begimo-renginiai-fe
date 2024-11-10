@@ -36,7 +36,7 @@ function InviteList() {
 								fontWeight: 'bold',
 							}}
 						>
-							Peržiūrėti išsiūstus pakietimus
+							Peržiūrėti išsiųstus pakietimus
 						</Typography>
 					</CardContent>
 				</CardActionArea>

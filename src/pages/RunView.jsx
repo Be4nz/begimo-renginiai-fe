@@ -35,7 +35,10 @@ function RunView() {
 	const handleWeatherClick = () => {
 		navigate('/run/1/weather');
 	};
-	
+    
+	const handleMakeCommentClick = () => {
+        navigate('/make-comment');
+    };
 
     return (
         <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' height='100vh' padding={3}>
@@ -79,7 +82,7 @@ function RunView() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Siūsti pakvietmą
+                            Siųsti pakvietimą
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -118,7 +121,22 @@ function RunView() {
                     </CardContent>
                 </CardActionArea>
             </Card>
-
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+                <CardActionArea onClick={handleMakeCommentClick}>
+                    <CardContent>
+                        <Typography
+                            variant='h5'
+                            component='div'
+                            sx={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Kurti komentarą
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
 			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
                 <CardActionArea onClick={handleWeatherClick}>
                     <CardContent>
