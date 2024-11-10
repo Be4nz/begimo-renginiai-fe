@@ -9,15 +9,15 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const CreateRun = () => {
+const EditRun = () => {
     const navigate = useNavigate();
 
     const handleCancel = () => {
-        navigate('/run-list');
+        navigate('/run/1');
     };
 
-    const handleHomePage = () => {
-        navigate('/run-list');
+    const handleEdit = () => {
+        navigate('/run/1');
     };
 
     return (
@@ -32,7 +32,7 @@ const CreateRun = () => {
             <Card sx={{ maxWidth: 500, padding: 4, boxShadow: 3 }}>
                 <CardContent>
                     <Typography variant="h4" component="div" gutterBottom>
-                        Sukurti naują bėgimą
+                        Redaguoti bėgimą
                     </Typography>
                     <form>
                         <Box sx={{ mb: 3 }}>
@@ -81,9 +81,9 @@ const CreateRun = () => {
                                 color="primary"
                                 fullWidth
                                 sx={{ padding: 1 }}
-                                onClick={handleHomePage}
+                                onClick={handleEdit}
                             >
-                                Sukurti bėgimą
+                                Išsaugoti pakeitimus
                             </Button>
                             <Button
                                 type="button"
@@ -103,4 +103,4 @@ const CreateRun = () => {
     );
 };
 
-export default CreateRun;
+export default EditRun;
