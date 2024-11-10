@@ -2,15 +2,11 @@ import React from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function RunView() {
+function InviteList() {
 	const navigate = useNavigate();
 
 	const handleCardClick = () => {
-		navigate('/run/1/comments');
-	};
-
-	const handleInviteClick = () => {
-		navigate('/invite-form');
+		navigate('/sent-invite-list');
 	};
 
 	return (
@@ -25,7 +21,7 @@ function RunView() {
 					letterSpacing: 2,
 				}}
 			>
-				Bėgimas
+				Gauti pakvietimai
 			</Typography>
 
 			{/* Clickable Card */}
@@ -40,24 +36,7 @@ function RunView() {
 								fontWeight: 'bold',
 							}}
 						>
-							Komentarai
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-			</Card>
-
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-				<CardActionArea onClick={handleInviteClick}>
-					<CardContent>
-						<Typography
-							variant='h5'
-							component='div'
-							sx={{
-								textAlign: 'center',
-								fontWeight: 'bold',
-							}}
-						>
-							Siūsti pakvietmą
+							Peržiūrėti išsiūstus pakietimus
 						</Typography>
 					</CardContent>
 				</CardActionArea>
@@ -66,4 +45,4 @@ function RunView() {
 	);
 }
 
-export default RunView;
+export default InviteList;

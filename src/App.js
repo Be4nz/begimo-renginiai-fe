@@ -8,7 +8,10 @@ import UserProfile from './pages/UserProfile';
 import CommentList from './pages/CommentList';
 import NavigationBar from './components/navigation/NavigationBar';
 import NewPassword from './pages/NewPassword';
-import ChangePassword from './pages/ChangePassword'
+import ChangePassword from './pages/ChangePassword';
+import InviteForm from './pages/InviteForm';
+import InviteList from './pages/InviteList';
+import SentInviteList from './pages/SentInviteList';
 
 function App() {
 	return (
@@ -17,13 +20,16 @@ function App() {
 				<NavigationBar />
 				<Routes>
 					<Route path='/login' element={<Login />} />
-					<Route path='/changepassword' element={<ChangePassword/>} />
+					<Route path='/changepassword' element={<ChangePassword />} />
 					<Route path='/register' element={<Register />} />
 					<Route path='/run-list' element={<RunList />} />
 					<Route path='/run/:id' element={<RunView />} />
 					<Route path='/user/:id' element={<UserProfile />} />
 					<Route path='/run/:id/comments' element={<CommentList />} />
 					<Route path='/changepassword/:id/' element={<NewPassword />} />
+					<Route path='/invite-form' element={<InviteForm />} />
+					<Route path='/invite-list' element={<InviteList />} />
+					<Route path='/sent-invite-list' element={<SentInviteList />} />
 					<Route path='*' element={<Navigate to={'/login'} replace />} />
 				</Routes>
 			</Router>
