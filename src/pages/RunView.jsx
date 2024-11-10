@@ -31,6 +31,10 @@ function RunView() {
         setModalOpen(false);
 		navigate('/run-list');
     };
+
+	const handleWeatherClick = () => {
+		navigate('/run/1/weather');
+	};
 	
 
     return (
@@ -110,6 +114,20 @@ function RunView() {
                             }}
                         >
                             Pašalinti bėgimą
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+                <CardActionArea onClick={handleWeatherClick}>
+                    <CardContent>
+                        <Typography
+                            variant="h5"
+                            component="div"
+                            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+                        >
+                            Orų prognozė
                         </Typography>
                     </CardContent>
                 </CardActionArea>

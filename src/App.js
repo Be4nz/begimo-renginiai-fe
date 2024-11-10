@@ -10,6 +10,7 @@ import NavigationBar from './components/navigation/NavigationBar';
 import NewPassword from './pages/NewPassword';
 import ChangePassword from './pages/ChangePassword';
 import CreateRun from './pages/CreateRun';
+import RunWheater from './pages/RunWheater';
 import EditRun from './pages/EditRun';
 import InviteForm from './pages/InviteForm';
 import InviteList from './pages/InviteList';
@@ -30,6 +31,7 @@ function App() {
 					<Route path='/edit-run/:id' element={<EditRun />} />
 					<Route path='/user/:id' element={<UserProfile />} />
 					<Route path='/run/:id/comments' element={<CommentList />} />
+					<Route path='/run/:id/weather' element={<RunWheater />} />
 					<Route path='/changepassword/:id/' element={<NewPassword />} />
 					<Route path='/invite-form' element={<InviteForm />} />
 					<Route path='/invite-list' element={<InviteList />} />
