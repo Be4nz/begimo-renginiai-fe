@@ -5,8 +5,12 @@ import { useNavigate } from 'react-router-dom';
 function RunList() {
 	const navigate = useNavigate();
 
-	const handleCardClick = () => {
+	const handleCardClickRun = () => {
 		navigate('/run/1');
+	};
+
+	const handleCardClickCreate = () => {
+		navigate('/create-run/1');
 	};
 
 	return (
@@ -26,7 +30,7 @@ function RunList() {
 
 			{/* Clickable Card */}
 			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-				<CardActionArea onClick={handleCardClick}>
+				<CardActionArea onClick={handleCardClickRun}>
 					<CardContent>
 						<Typography
 							variant='h5'
@@ -37,6 +41,22 @@ function RunList() {
 							}}
 						>
 							Bėgimas
+						</Typography>
+					</CardContent>
+				</CardActionArea>
+			</Card>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+				<CardActionArea onClick={handleCardClickCreate}>
+					<CardContent>
+						<Typography
+							variant='h5'
+							component='div'
+							sx={{
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}
+						>
+							Kurti bėgimą
 						</Typography>
 					</CardContent>
 				</CardActionArea>
