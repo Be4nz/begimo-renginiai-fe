@@ -7,6 +7,8 @@ import RunView from './pages/RunView';
 import UserProfile from './pages/UserProfile';
 import CommentList from './pages/CommentList';
 import NavigationBar from './components/navigation/NavigationBar';
+import NewPassword from './pages/NewPassword';
+import ChangePassword from './pages/ChangePassword'
 
 function App() {
 	return (
@@ -15,11 +17,13 @@ function App() {
 				<NavigationBar />
 				<Routes>
 					<Route path='/login' element={<Login />} />
+					<Route path='/changepassword' element={<ChangePassword/>} />
 					<Route path='/register' element={<Register />} />
 					<Route path='/run-list' element={<RunList />} />
 					<Route path='/run/:id' element={<RunView />} />
 					<Route path='/user/:id' element={<UserProfile />} />
 					<Route path='/run/:id/comments' element={<CommentList />} />
+					<Route path='/changepassword/:id/' element={<NewPassword />} />
 					<Route path='*' element={<Navigate to={'/login'} replace />} />
 				</Routes>
 			</Router>

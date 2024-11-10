@@ -2,32 +2,27 @@ import React, { useState } from 'react';
 import { Button, TextField, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function NewPassword() {
 	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const navigate = useNavigate();
+	const [password1, setPassword1] = useState('');
+    const [password2, setPassword2] = useState('');
+
 
 	const handleEmailChange = (e) => {
 		setEmail(e.target.value);
 	};
 
-	const handlePasswordChange = (e) => {
-		setPassword(e.target.value);
+	const handlePasswordChange1 = (e) => {
+		setPassword1(e.target.value);
+	};
+
+    const handlePasswordChange2 = (e) => {
+		setPassword2(e.target.value);
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log('Email:', email);
-		console.log('Password:', password);
-		navigate('/run-list');
-	};
 
-	const handleRegisterRedirect = () => {
-		navigate('/register');
-	};
-
-	const handleChangePasswordRedirect = () => {
-		navigate('/changepassword');
 	};
 
 	return (
@@ -41,10 +36,8 @@ function Login() {
 			padding={3}
 		>
 			<Typography variant='h4' gutterBottom>
-				Prisijungimas
+				Pakeisti slaptažodį
 			</Typography>
-
-			{/* Form */}
 			<Box component='form' noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 400 }}>
 				<TextField
 					fullWidth
@@ -63,29 +56,26 @@ function Login() {
 					type='password'
 					variant='outlined'
 					required
-					value={password}
-					onChange={handlePasswordChange}
+					value={password1}
+					onChange={handlePasswordChange1}
+				/>
+                <TextField
+					fullWidth
+					margin='normal'
+					label='Pakartokite slaptažodį'
+					type='password'
+					variant='outlined'
+					required
+					value={password2}
+					onChange={handlePasswordChange2}
 				/>
 
 				<Button type='submit' fullWidth variant='contained' color='primary' sx={{ mt: 2, mb: 2 }}>
-					Prisijungti
+					Pakeisti slaptažodį
 				</Button>
 			</Box>
-
-			<Typography variant='body2' sx={{ mb: 1 }}>
-				Dar neturite paskyros?
-			</Typography>
-			<Button variant='text' color='primary' onClick={handleRegisterRedirect}>
-				Registracija
-			</Button>
-			<Typography variant='body2' sx={{ mb: 1 }}>
-				Pamiršote slaptažodį?
-			</Typography>
-			<Button variant='text' color='primary' onClick={handleChangePasswordRedirect}>
-				Pakeisti slaptažodį
-			</Button>
 		</Box>
 	);
 }
 
-export default Login;
+export default NewPassword;
