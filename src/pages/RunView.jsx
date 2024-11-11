@@ -15,6 +15,13 @@ function RunView() {
         navigate('/invite-form');
     };
 
+    const handleEventRegistration = () => {
+        navigate('/register-event');
+    };
+    const handleEventRegistrationUpdate = () => {
+        navigate('/update-event-registration');
+    };
+
     const handleEditRun = () => {
         navigate('/edit-run/1');
     };
@@ -137,6 +144,23 @@ function RunView() {
                     </CardContent>
                 </CardActionArea>
             </Card>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+                <CardActionArea onClick={handleEventRegistration}>
+                    <CardContent>
+                        <Typography
+                            variant='h5'
+                            component='div'
+                            sx={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Registruotis į bėgimo renginį
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+            
 			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
                 <CardActionArea onClick={handleWeatherClick}>
                     <CardContent>
