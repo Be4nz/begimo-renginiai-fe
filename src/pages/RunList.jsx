@@ -25,7 +25,7 @@ function RunList() {
 					letterSpacing: 2,
 				}}
 			>
-				Bėgimai
+				Pagrindinis puslapis
 			</Typography>
 
 			{/* Clickable Card */}

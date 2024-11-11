@@ -37,6 +37,10 @@ function RunView() {
 	};
 	
 
+    const handleMainPageClick = () => {
+        navigate('/run-list');
+    }
+
     return (
         <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' height='100vh' padding={3}>
             <Typography
@@ -96,7 +100,7 @@ function RunView() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Redaguoti bėgimą
+                            Redaguoti renginį
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -113,7 +117,7 @@ function RunView() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Pašalinti bėgimą
+                            Pašalinti renginį
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -133,6 +137,20 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+                <CardActionArea onClick={handleMainPageClick}>
+                    <CardContent>
+                        <Typography
+                            variant="h5"
+                            component="div"
+                            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+                        >
+                            Grižti į pagrindinį puslapį
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+            
             <RunDeleteConfirm
                 open={isModalOpen}
                 onClose={handleCloseModal}

@@ -28,7 +28,7 @@ const EditRun = () => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            height="100vh"
+            height="200vh"
             padding={3}
         >
             <Card sx={{ maxWidth: 500, width: '100%', padding: 4, boxShadow: 3 }}>
