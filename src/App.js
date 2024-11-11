@@ -17,7 +17,9 @@ import InviteList from './pages/InviteList';
 import SentInviteList from './pages/SentInviteList';
 import MakeCommentForm from './pages/MakeCommentForm';
 import UpdateCommentForm from './pages/UpdateCommentForm';
-
+import EventRegistration from './pages/EventRegistration';
+import UpdateEventRegistration from './pages/UpdateEventRegistration';
+import Calendar from './pages/Calendar';
 function App() {
 	return (
 		<div className='App'>
@@ -25,6 +27,9 @@ function App() {
 				<NavigationBar />
 				<Routes>
 					<Route path='/login' element={<Login />} />
+					<Route path='/register-event' element={<EventRegistration/>}/>
+					<Route path='/update-event-registration' element={<UpdateEventRegistration/>}/>
+					<Route path="/calendar" element={<Calendar />} />
 					<Route path='/make-comment' element={<MakeCommentForm />} />
 					<Route path='/update-comment' element={<UpdateCommentForm />} />
 					<Route path='/changepassword' element={<ChangePassword />} />
