@@ -11,7 +11,7 @@ function NewPassword() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
+		alert("Į jūsų el. paštą buvo išsiųstos tolesnės slaptažodžio pakeitimo instrukcijos")
 	};
 
 	return (

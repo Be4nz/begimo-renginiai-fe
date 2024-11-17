@@ -3,14 +3,10 @@ import { Button, TextField, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 function NewPassword() {
-	const [email, setEmail] = useState('');
+	const navigate = useNavigate();
+
 	const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
-
-
-	const handleEmailChange = (e) => {
-		setEmail(e.target.value);
-	};
 
 	const handlePasswordChange1 = (e) => {
 		setPassword1(e.target.value);
@@ -22,6 +18,7 @@ function NewPassword() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		navigate("/login")
 
 	};
 
@@ -39,16 +36,6 @@ function NewPassword() {
 				Pakeisti slaptažodį
 			</Typography>
 			<Box component='form' noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 400 }}>
-				<TextField
-					fullWidth
-					margin='normal'
-					label='El. paštas'
-					type='email'
-					variant='outlined'
-					required
-					value={email}
-					onChange={handleEmailChange}
-				/>
 				<TextField
 					fullWidth
 					margin='normal'
