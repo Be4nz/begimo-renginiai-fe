@@ -14,11 +14,14 @@ function NavigationBar() {
 				<Button onClick={() => navigate('/run-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
 					Bėgimai
 				</Button>
-				<Button onClick={() => navigate('/invite-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
-					Pakvietimai
-				</Button>
 				{showAll && (
 					<>
+						<Button onClick={() => navigate('/invite-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
+							Pakvietimai
+						</Button>
+						<Button onClick={() => navigate('/invite/1')} sx={{ my: 2, color: 'white', display: 'block' }}>
+							Pakvietimas
+						</Button>
 						<Button onClick={() => navigate('/run/1')} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Bėgimas
 						</Button>

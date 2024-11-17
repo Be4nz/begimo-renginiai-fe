@@ -9,6 +9,10 @@ function RunList() {
 		navigate('/run/1');
 	};
 
+	const handleInviteListClick = () => {
+		navigate('/invite-list');
+	};
+
 	return (
 		<Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' height='100vh' padding={3}>
 			{/* Title */}
@@ -25,6 +29,22 @@ function RunList() {
 			</Typography>
 
 			{/* Clickable Card */}
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+				<CardActionArea onClick={handleInviteListClick}>
+					<CardContent>
+						<Typography
+							variant='h5'
+							component='div'
+							sx={{
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}
+						>
+							Pakvietimai
+						</Typography>
+					</CardContent>
+				</CardActionArea>
+			</Card>
 			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
 				<CardActionArea onClick={handleCardClick}>
 					<CardContent>

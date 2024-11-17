@@ -12,6 +12,7 @@ import ChangePassword from './pages/ChangePassword';
 import InviteForm from './pages/InviteForm';
 import InviteList from './pages/InviteList';
 import SentInviteList from './pages/SentInviteList';
+import Invite from './pages/Invite';
 
 function App() {
 	return (
@@ -29,6 +30,7 @@ function App() {
 					<Route path='/changepassword/:id/' element={<NewPassword />} />
 					<Route path='/invite-form' element={<InviteForm />} />
 					<Route path='/invite-list' element={<InviteList />} />
+					<Route path='/invite/:id' element={<Invite />} />
 					<Route path='/sent-invite-list' element={<SentInviteList />} />
 					<Route path='*' element={<Navigate to={'/login'} replace />} />
 				</Routes>
