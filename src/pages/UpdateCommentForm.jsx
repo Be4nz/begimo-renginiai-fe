@@ -8,11 +8,6 @@ function UpdateCommentForm() {
     const handleCardClick = () => {
 		navigate('/run/1/comments');
 	};
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("New Comment:", comment);
-        navigate('/'); // Redirect to the main page or desired location after submission
-    };
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" padding={3}>
@@ -35,7 +30,7 @@ function UpdateCommentForm() {
             <Typography variant="h4" component="h1" gutterBottom>
                 Atnaujinti komentarą
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleCardClick}>
                 <TextField
                     label="Čia yra įvestas komentaras su kląida"
                     variant="outlined"
