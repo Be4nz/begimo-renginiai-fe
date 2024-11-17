@@ -34,6 +34,9 @@ function NavigationBar() {
 						<Button onClick={() => navigate('/user/1')} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Vartotojo profilis
 						</Button>
+						<Button onClick={() => navigate('/changepassword/aaaaa')} sx={{ my: 2, color: 'white', display: 'block' }}>
+							Slaptažodžio pakeitimo forma
+						</Button>
 					</>
 				)}
 				<Button onClick={() => setShowAll(!showAll)} sx={{ my: 2, color: 'white', display: 'block' }}>
