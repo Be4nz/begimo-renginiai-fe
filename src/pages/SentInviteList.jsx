@@ -21,7 +21,7 @@ function SentInviteList() {
 					letterSpacing: 2,
 				}}
 			>
-				Išsiūsti pakietimai
+				Išsiųsti pakietimai
 			</Typography>
 
 			{/* Clickable Card */}

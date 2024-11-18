@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import RegistrationDeleteConfirm from '../components/modal/RegistrationDeleteConfirm';
 
 function EventRegistration() {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
-
+	const [isModalOpen, setModalOpen] = useState(false);
     const handleCardClick = () => {
         navigate('/run/1');
     };
@@ -23,6 +24,17 @@ function EventRegistration() {
     const handleSubmit = (event) => {
         event.preventDefault();
         setMessage('Registration Successful!');
+    };
+    
+    const handleDeleteRegistration = () => {
+        setModalOpen(true);
+    };
+	const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
+    const handleConfirmDelete = () => {
+        setModalOpen(false);
     };
 
     return (
@@ -110,6 +122,27 @@ function EventRegistration() {
                     </CardContent>
                 </CardActionArea>
             </Card>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+                <CardActionArea onClick={handleDeleteRegistration}>
+                    <CardContent>
+                        <Typography
+                            variant='h5'
+                            component='div'
+                            sx={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            Pašalinti registraciją
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+            <RegistrationDeleteConfirm
+                open={isModalOpen}
+                onClose={handleCloseModal}
+                onConfirm={handleConfirmDelete}
+            />
         </Box>
     );
 }
