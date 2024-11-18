@@ -18,6 +18,7 @@ import SentInviteList from './pages/SentInviteList';
 import MakeCommentForm from './pages/MakeCommentForm';
 import UpdateCommentForm from './pages/UpdateCommentForm';
 import EventRegistration from './pages/EventRegistration';
+import EventRegistrationView from './pages/EventRegistrationView';
 import UpdateEventRegistration from './pages/UpdateEventRegistration';
 import Calendar from './pages/Calendar';
 function App() {
@@ -28,6 +29,7 @@ function App() {
 				<Routes>
 					<Route path='/login' element={<Login />} />
 					<Route path='/register-event' element={<EventRegistration/>}/>
+					<Route path='/register-event-view' element={<EventRegistrationView/>}/>
 					<Route path='/update-event-registration' element={<UpdateEventRegistration/>}/>
 					<Route path="/calendar" element={<Calendar />} />
 					<Route path='/make-comment' element={<MakeCommentForm />} />

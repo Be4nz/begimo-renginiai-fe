@@ -16,7 +16,7 @@ function RunView() {
     };
 
     const handleEventRegistration = () => {
-        navigate('/register-event');
+        navigate('/register-event-view');
     };
     const handleEventRegistrationUpdate = () => {
         navigate('/update-event-registration');

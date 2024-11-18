@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState }  from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import RegistrationDeleteConfirm from '../components/modal/RegistrationDeleteConfirm';
 
 function EventRegistration() {
     const navigate = useNavigate();
@@ -10,12 +9,9 @@ function EventRegistration() {
     const [message, setMessage] = useState('');
 	const [isModalOpen, setModalOpen] = useState(false);
     const handleCardClick = () => {
-        navigate('/run/1');
+        navigate('/register-event-view');
     };
 
-    const handleEventRegistrationUpdate = () => {
-        navigate('/update-event-registration');
-    };
 
     const handleCalendarClick = () => {
         navigate('/calendar');
@@ -62,7 +58,7 @@ function EventRegistration() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Atgal į bėgimo renginys
+                            Atgal į registracijos peržiūrą
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -106,43 +102,6 @@ function EventRegistration() {
                 Peržiūrėti kalendorių
             </Button>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginTop: 3 }}>
-                <CardActionArea onClick={handleEventRegistrationUpdate}>
-                    <CardContent>
-                        <Typography
-                            variant='h5'
-                            component='div'
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Atnaujinti registraciją
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-                <CardActionArea onClick={handleDeleteRegistration}>
-                    <CardContent>
-                        <Typography
-                            variant='h5'
-                            component='div'
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Pašalinti registraciją
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-            <RegistrationDeleteConfirm
-                open={isModalOpen}
-                onClose={handleCloseModal}
-                onConfirm={handleConfirmDelete}
-            />
         </Box>
     );
 }

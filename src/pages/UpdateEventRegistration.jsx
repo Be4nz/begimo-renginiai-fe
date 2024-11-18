@@ -9,7 +9,7 @@ function UpdateEventRegistration() {
     const [message, setMessage] = useState('');
 
     const handleCardClick = () => {
-        navigate('/run/1'); 
+        navigate('/register-event-view'); 
     };
 
     const handleSubmit = (event) => {
@@ -33,7 +33,7 @@ function UpdateEventRegistration() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Atgal į bėgimo renginį
+                            Atgal į registracijų peržiūrą
                         </Typography>
                     </CardContent>
                 </CardActionArea>
