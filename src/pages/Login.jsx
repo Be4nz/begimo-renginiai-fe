@@ -15,11 +15,48 @@ function Login() {
 		setPassword(e.target.value);
 	};
 
+	const saveToken = (userToken) => {
+		localStorage.setItem('token', userToken);
+	};
+
+	const saveUser = (user) =>{
+		localStorage.setItem('user', user);
+	}
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log('Email:', email);
 		console.log('Password:', password);
-		navigate('/run-list');
+
+		fetch('http://localhost:5000/user/login', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				username: email,
+				password: password,
+			}),
+		})
+			.then((response) => response.json().then((data) => ({ status: response.status, body: data })))
+			.then(({ status, body }) => {
+				if (status === 200) {
+					alert('Prisijungimas sėkmingas');
+					saveToken(body.jwt);
+					saveUser(body.userid);
+					navigate('/run-list');
+				} else {
+					alert('Prisijungimas nepavyko: ' + body.error);
+				}
+			})
+			.catch((error) => {
+				console.error('Klaida:', error);
+				if (error.message === 'Failed to fetch') {
+					alert('Serveris nepasiekiamas');
+				} else {
+					alert('Klaida: ' + error.message);
+				}
+			});
 	};
 
 	const handleRegisterRedirect = () => {

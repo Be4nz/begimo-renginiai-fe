@@ -31,11 +31,25 @@ function NavigationBar() {
 						<Button onClick={() => navigate('/register')} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Registracija
 						</Button>
-						<Button onClick={() => navigate('/user/1')} sx={{ my: 2, color: 'white', display: 'block' }}>
+						<Button onClick={() => {
+							const user = localStorage.getItem('user');
+							if (user) {
+								navigate(`/user/${user}`);
+							} else {
+								navigate('/login');
+							}
+						}} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Vartotojo profilis
 						</Button>
 						<Button onClick={() => navigate('/changepassword/aaaaa')} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Slaptažodžio pakeitimo forma
+						</Button>
+						<Button onClick={() => {
+							localStorage.removeItem('user');
+							localStorage.removeItem('token');
+							navigate('/login');
+							}} sx={{ my: 2, color: 'white', display: 'block' }}>
+								Atsijungti
 						</Button>
 					</>
 				)}

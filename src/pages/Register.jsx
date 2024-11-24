@@ -11,13 +11,41 @@ function Register() {
 	const handleLoginRedirect = () => {
 		navigate('/login');
 	};
-
+	
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		console.log('Username:', username);
 		console.log('Email:', email);
 		console.log('Password:', password);
-		navigate('/login');
+
+		fetch('http://localhost:5000/user/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				username: username,
+				email: email,
+				password: password,
+			}),
+		})
+			.then((response) => response.json().then((data) => ({ status: response.status, body: data })))
+			.then(({ status, body }) => {
+				if (status === 201) {
+					alert('Registracija sėkminga');
+					navigate('/');
+				} else {
+					alert('Registracija nepavyko, ' + body.error);
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+				if (error.message === 'Failed to fetch') {
+					alert('Serveris nepasiekiamas');
+				} else {
+					alert('Klaida: ' + error.message);
+				}
+			});
 	};
 
 	return (
