@@ -226,7 +226,18 @@ const CreateRun = () => {
                                 required
                             />
                         </Box>
-                        {/* Add other form inputs here */}
+                        <Box sx={{ mb: 3 }}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="privatus"
+                                        checked={formData.privatus}
+                                        onChange={handleInputChange}
+                                    />
+                                }
+                                label="Privatus"
+                            />
+                        </Box>
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             <Button
                                 type="submit"
