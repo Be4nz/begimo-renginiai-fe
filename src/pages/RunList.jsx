@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { fetchPublicEvents } from '../api/eventAPI';
 
 function RunList() {
+	const [events, setEvents] = useState([]);
 	const navigate = useNavigate();
 
-	const handleCardClickRun = () => {
-		navigate('/run/1');
-	};
+	useEffect(() => {
+        const getEvents = async () => {
+            try {
+                const eventsData = await fetchPublicEvents();
+                setEvents(eventsData);
+            } catch (error) {
+                console.error('Error fetching public events:', error);
+            }
+        };
+
+        getEvents();
+    }, []);
+
+	const handleCardClickRun = (id) => {
+        navigate(`/run/${id}`);
+    };
 
 	const handleCardClickCreate = () => {
 		navigate('/create-run/1');
@@ -26,7 +41,6 @@ function RunList() {
 	};
 	return (
 		<Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' height='100vh' padding={3}>
-			{/* Title */}
 			<Typography
 				variant='h3'
 				component='h1'
@@ -39,23 +53,27 @@ function RunList() {
 				Bėgimai
 			</Typography>
 
-			{/* Clickable Card */}
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-				<CardActionArea onClick={handleCardClickRun}>
-					<CardContent>
-						<Typography
-							variant='h5'
-							component='div'
-							sx={{
-								textAlign: 'center',
-								fontWeight: 'bold',
-							}}
-						>
-							Bėgimas
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-			</Card>
+			{events.map((event) => (
+				<Card
+					key={event.id}
+					sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}
+				>
+					<CardActionArea onClick={() => handleCardClickRun(event.id)}>
+						<CardContent>
+							<Typography
+								variant='h5'
+								component='div'
+								sx={{
+									textAlign: 'center',
+									fontWeight: 'bold',
+								}}
+							>
+								{event.pavadinimas}
+							</Typography>
+						</CardContent>
+					</CardActionArea>
+				</Card>
+			))}
 			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
 				<CardActionArea onClick={handleCardClickRegister}>
 					<CardContent>
