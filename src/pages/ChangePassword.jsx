@@ -9,8 +9,23 @@ function NewPassword() {
 		setEmail(e.target.value);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		try {
+			const response = await fetch('http://localhost:5000/user/forgot-password', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email }),
+			});
+			if (!response.ok) {
+				throw new Error();
+			}
+		} catch (error) {
+			alert("Sistemos klaida. Bandykite dar kartą vėliau")
+			return;
+		}
 		alert("Į jūsų el. paštą buvo išsiųstos tolesnės slaptažodžio pakeitimo instrukcijos")
 	};
 

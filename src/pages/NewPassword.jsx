@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { Button, TextField, Box, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function NewPassword() {
 	const navigate = useNavigate();
 
+	const code = useParams().id;
 	const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
+	const [email, setEmail] = useState('');
+
+	const handleEmailChange = (e) => {
+		setEmail(e.target.value);
+	};
 
 	const handlePasswordChange1 = (e) => {
 		setPassword1(e.target.value);
@@ -16,8 +22,32 @@ function NewPassword() {
 		setPassword2(e.target.value);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (password1 !== password2) {
+			alert("Slaptažodžiai nesutampa")
+			return;
+		}
+		try {
+			const response = await fetch('http://localhost:5000/user/change-password', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email, password: password1, code }),
+			});
+			if (!response.ok) {
+				console.log(response)
+				alert("Sistemos klaida. Bandykite dar kartą vėliau")
+				return;
+			}
+			alert("Slaptažodis pakeistas")
+			
+		} catch (error) {
+			alert("Sistemos klaida: " + error)
+			return;
+		}
+
 		navigate("/login")
 
 	};
@@ -36,6 +66,16 @@ function NewPassword() {
 				Pakeisti slaptažodį
 			</Typography>
 			<Box component='form' noValidate onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 400 }}>
+				<TextField
+					fullWidth
+					margin='normal'
+					label='El. paštas'
+					type='email'
+					variant='outlined'
+					required
+					value={email}
+					onChange={handleEmailChange}
+				/>
 				<TextField
 					fullWidth
 					margin='normal'
