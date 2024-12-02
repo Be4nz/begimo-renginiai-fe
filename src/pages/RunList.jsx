@@ -74,7 +74,7 @@ function RunList() {
 					</CardActionArea>
 				</Card>
 			))}
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
 				<CardActionArea onClick={handleCardClickRegister}>
 					<CardContent>
 						<Typography
@@ -90,7 +90,7 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
 				<CardActionArea onClick={handleCardClickCreate}>
 					<CardContent>
 						<Typography
@@ -106,7 +106,7 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
 				<CardActionArea onClick={handleCardClickUser}>
 					<CardContent>
 						<Typography
@@ -122,7 +122,7 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
 				<CardActionArea onClick={handleCardClickInvite}>
 					<CardContent>
 						<Typography
