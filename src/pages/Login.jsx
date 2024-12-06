@@ -19,8 +19,12 @@ function Login() {
 		localStorage.setItem('token', userToken);
 	};
 
-	const saveUser = (user) =>{
+	const saveUser = (user, otherData) =>{
+		console.log(otherData);
 		localStorage.setItem('user', user);
+		localStorage.setItem('full_user', otherData);
+
+		console.log(localStorage.getItem('full_user'));
 	}
 
 	const handleSubmit = (e) => {
@@ -43,7 +47,7 @@ function Login() {
 				if (status === 200) {
 					alert('Prisijungimas sėkmingas');
 					saveToken(body.jwt);
-					saveUser(body.userid);
+					saveUser(body.userid, body.user);
 					navigate('/run-list');
 				} else {
 					alert('Prisijungimas nepavyko: ' + body.error);
