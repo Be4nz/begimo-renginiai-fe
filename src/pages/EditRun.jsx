@@ -8,13 +8,18 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchEventById, editEventById } from '../api/eventAPI';
+import { fetchEventById, editEventById, fetchCities } from '../api/eventAPI';
 
 const EditRun = () => {
     const navigate = useNavigate();
     const { id } = useParams();
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -29,14 +34,20 @@ const EditRun = () => {
         private: false,
         photo: '',
         coordinate: '',
+        cityId: '', // City selection
     });
 
+    const [cities, setCities] = useState([]); // To hold city list
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchEvent = async () => {
+        const fetchEventAndCities = async () => {
             try {
-                const event = await fetchEventById(id);
+                const [event, cityList] = await Promise.all([
+                    fetchEventById(id),
+                    fetchCities(),
+                ]);
+
                 setFormData({
                     name: event.pavadinimas || '',
                     description: event.aprasymas || '',
@@ -51,16 +62,19 @@ const EditRun = () => {
                     private: event.privatus || false,
                     photo: event.nuotrauka || '',
                     coordinate: event.koordinate || '',
+                    cityId: event.miestas_id || '', // Pre-fill city selection
                 });
+
+                setCities(cityList);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching event:', error);
-                alert('Nepavyko gauti renginio duomenų.');
+                console.error('Error fetching event or cities:', error);
+                alert('Nepavyko gauti renginio arba miestų duomenų.');
                 navigate('/run-list');
             }
         };
 
-        fetchEvent();
+        fetchEventAndCities();
     }, [id, navigate]);
 
     const handleInputChange = (e) => {
@@ -175,12 +189,30 @@ const EditRun = () => {
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="city-label">Pasirinkite miestą</InputLabel>
+                                <Select
+                                    labelId="city-label"
+                                    name="cityId"
+                                    value={formData.cityId}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {cities.map((city) => (
+                                        <MenuItem key={city.id} value={city.id}>
+                                            {city.pavadinimas}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
                             <TextField
                                 fullWidth
-                                label="Vieta"
+                                label="Adresas"
                                 variant="outlined"
-                                name="location"
-                                value={formData.location}
+                                name="address"
+                                value={formData.address}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -210,28 +242,6 @@ const EditRun = () => {
                         <Box sx={{ mb: 3 }}>
                             <TextField
                                 fullWidth
-                                label="Adresas"
-                                variant="outlined"
-                                name="address"
-                                value={formData.address}
-                                onChange={handleInputChange}
-                            />
-                        </Box>
-                        <Box sx={{ mb: 3 }}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        name="private"
-                                        checked={formData.private}
-                                        onChange={handleInputChange}
-                                    />
-                                }
-                                label="Privatus"
-                            />
-                        </Box>
-                        <Box sx={{ mb: 3 }}>
-                            <TextField
-                                fullWidth
                                 label="Nuotrauka (URL)"
                                 variant="outlined"
                                 name="photo"
@@ -249,6 +259,18 @@ const EditRun = () => {
                                 type="text"
                                 value={formData.coordinate}
                                 onChange={handleInputChange}
+                            />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="private"
+                                        checked={formData.private}
+                                        onChange={handleInputChange}
+                                    />
+                                }
+                                label="Privatus"
                             />
                         </Box>
                         <Box sx={{ display: 'flex', gap: 2 }}>

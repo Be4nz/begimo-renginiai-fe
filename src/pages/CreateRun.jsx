@@ -87,7 +87,7 @@ const CreateRun = () => {
             <Card sx={{ maxWidth: 500, padding: 4, boxShadow: 3 }}>
                 <CardContent>
                     <Typography variant="h4" component="div" gutterBottom>
-                        Sukurti naują bėgimą
+                        Sukurti naują renginį
                     </Typography>
                     <form onSubmit={handleFormSubmit}>
                         <Box sx={{ mb: 3 }}>

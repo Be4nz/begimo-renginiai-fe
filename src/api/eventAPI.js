@@ -46,7 +46,7 @@ export const fetchCities = async () => {
 
 export const fetchEventById = async (id) => {
     try {
-        const response = await axiosInstance.get(`/event/${id}`);
+        const response = await axiosInstance.get(`/event/event/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching event by ID:', error.response?.data || error.message);
