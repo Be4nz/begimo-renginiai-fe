@@ -50,7 +50,7 @@ function RunList() {
 					letterSpacing: 2,
 				}}
 			>
-				Bėgimai
+				Pagrindinis langas
 			</Typography>
 
 			{events.map((event) => (

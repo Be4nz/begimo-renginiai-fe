@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Typography,
@@ -7,41 +7,106 @@ import {
     TextField,
     Button,
     Checkbox,
-    FormControlLabel
+    FormControlLabel,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchEventById, editEventById } from '../api/eventAPI';
 
 const EditRun = () => {
     const navigate = useNavigate();
+    const { id } = useParams();
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        distance: '',
+        location: '',
+        website: '',
+        facebookLink: '',
+        address: '',
+        private: false,
+        photo: '',
+        coordinate: '',
+    });
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            try {
+                const event = await fetchEventById(id);
+                setFormData({
+                    name: event.pavadinimas || '',
+                    description: event.aprasymas || '',
+                    date: event.data || '',
+                    startTime: event.pradzios_laikas || '',
+                    endTime: event.pabaigos_laikas || '',
+                    distance: event.atstumas || '',
+                    location: event.vieta || '',
+                    website: event.internetinio_puslapio_nuoroda || '',
+                    facebookLink: event.facebook_nuoroda || '',
+                    address: event.adresas || '',
+                    private: event.privatus || false,
+                    photo: event.nuotrauka || '',
+                    coordinate: event.koordinate || '',
+                });
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching event:', error);
+                alert('Nepavyko gauti renginio duomenų.');
+                navigate('/run-list');
+            }
+        };
+
+        fetchEvent();
+    }, [id, navigate]);
+
+    const handleInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
+    const handleEdit = async (e) => {
+        e.preventDefault();
+        try {
+            await editEventById(id, formData);
+            alert('Renginys sėkmingai atnaujintas.');
+            navigate(`/run/${id}`);
+        } catch (error) {
+            console.error('Error updating event:', error);
+            alert('Įvyko klaida atnaujinant renginį.');
+        }
+    };
 
     const handleCancel = () => {
-        navigate('/run/1');
+        navigate(`/run/${id}`);
     };
 
-    const handleEdit = () => {
-        navigate('/run/1');
-    };
+    if (loading) {
+        return <Typography>Loading...</Typography>;
+    }
 
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            padding={3}
-        >
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" padding={3}>
             <Card sx={{ maxWidth: 500, width: '100%', padding: 4, boxShadow: 3 }}>
                 <CardContent>
                     <Typography variant="h4" component="div" gutterBottom>
                         Redaguoti bėgimą
                     </Typography>
-                    <form>
+                    <form onSubmit={handleEdit}>
                         <Box sx={{ mb: 3 }}>
                             <TextField
                                 fullWidth
                                 label="Bėgimo pavadinimas"
                                 variant="outlined"
                                 name="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
                                 required
                             />
                         </Box>
@@ -51,6 +116,8 @@ const EditRun = () => {
                                 label="Aprašymas"
                                 variant="outlined"
                                 name="description"
+                                value={formData.description}
+                                onChange={handleInputChange}
                                 multiline
                                 rows={3}
                                 required
@@ -64,6 +131,8 @@ const EditRun = () => {
                                 name="date"
                                 type="date"
                                 InputLabelProps={{ shrink: true }}
+                                value={formData.date}
+                                onChange={handleInputChange}
                                 required
                             />
                         </Box>
@@ -75,6 +144,8 @@ const EditRun = () => {
                                 name="startTime"
                                 type="time"
                                 InputLabelProps={{ shrink: true }}
+                                value={formData.startTime}
+                                onChange={handleInputChange}
                                 required
                             />
                         </Box>
@@ -86,6 +157,8 @@ const EditRun = () => {
                                 name="endTime"
                                 type="time"
                                 InputLabelProps={{ shrink: true }}
+                                value={formData.endTime}
+                                onChange={handleInputChange}
                                 required
                             />
                         </Box>
@@ -96,6 +169,8 @@ const EditRun = () => {
                                 variant="outlined"
                                 name="distance"
                                 type="number"
+                                value={formData.distance}
+                                onChange={handleInputChange}
                                 required
                             />
                         </Box>
@@ -105,6 +180,8 @@ const EditRun = () => {
                                 label="Vieta"
                                 variant="outlined"
                                 name="location"
+                                value={formData.location}
+                                onChange={handleInputChange}
                                 required
                             />
                         </Box>
@@ -115,6 +192,8 @@ const EditRun = () => {
                                 variant="outlined"
                                 name="website"
                                 type="url"
+                                value={formData.website}
+                                onChange={handleInputChange}
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
@@ -124,6 +203,8 @@ const EditRun = () => {
                                 variant="outlined"
                                 name="facebookLink"
                                 type="url"
+                                value={formData.facebookLink}
+                                onChange={handleInputChange}
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
@@ -132,11 +213,19 @@ const EditRun = () => {
                                 label="Adresas"
                                 variant="outlined"
                                 name="address"
+                                value={formData.address}
+                                onChange={handleInputChange}
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
                             <FormControlLabel
-                                control={<Checkbox name="private" />}
+                                control={
+                                    <Checkbox
+                                        name="private"
+                                        checked={formData.private}
+                                        onChange={handleInputChange}
+                                    />
+                                }
                                 label="Privatus"
                             />
                         </Box>
@@ -147,6 +236,8 @@ const EditRun = () => {
                                 variant="outlined"
                                 name="photo"
                                 type="url"
+                                value={formData.photo}
+                                onChange={handleInputChange}
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
@@ -156,6 +247,8 @@ const EditRun = () => {
                                 variant="outlined"
                                 name="coordinate"
                                 type="text"
+                                value={formData.coordinate}
+                                onChange={handleInputChange}
                             />
                         </Box>
                         <Box sx={{ display: 'flex', gap: 2 }}>
@@ -165,7 +258,6 @@ const EditRun = () => {
                                 color="primary"
                                 fullWidth
                                 sx={{ padding: 1 }}
-                                onClick={handleEdit}
                             >
                                 Išsaugoti pakeitimus
                             </Button>

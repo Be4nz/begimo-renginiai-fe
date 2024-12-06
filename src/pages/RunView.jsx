@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import RunDeleteConfirm from '../components/modal/RunDeleteConfirm';
+import { deleteEventById } from '../api/eventAPI';
 
 function RunView() {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [isModalOpen, setModalOpen] = useState(false);
 
     const handleCardClick = () => {
-        navigate('/run/1/comments');
+        navigate(`/run/${id}/comments`);
     };
 
     const handleInviteClick = () => {
@@ -18,12 +20,13 @@ function RunView() {
     const handleEventRegistration = () => {
         navigate('/register-event-view');
     };
+
     const handleEventRegistrationUpdate = () => {
         navigate('/update-event-registration');
     };
 
     const handleEditRun = () => {
-        navigate('/edit-run/1');
+        navigate(`/edit-run/${id}`);
     };
 
     const handleDeleteRun = () => {
@@ -34,16 +37,25 @@ function RunView() {
         setModalOpen(false);
     };
 
-    const handleConfirmDelete = () => {
-        setModalOpen(false);
-		navigate('/run-list');
+    const handleConfirmDelete = async () => {
+        if (id) {
+            try {
+                await deleteEventById(id);
+                setModalOpen(false);
+                alert('Renginys sėkmingai ištrintas');
+                navigate('/run-list');
+            } catch (error) {
+                console.error('Error deleting event:', error);
+                alert('Įvyko klaida bandant ištrinti renginį');
+            }
+        }
     };
 
-	const handleWeatherClick = () => {
-		navigate('/run/1/weather');
-	};
-    
-	const handleMakeCommentClick = () => {
+    const handleWeatherClick = () => {
+        navigate(`/run/${id}/weather`);
+    };
+
+    const handleMakeCommentClick = () => {
         navigate('/make-comment');
     };
 
@@ -58,7 +70,7 @@ function RunView() {
                     letterSpacing: 2,
                 }}
             >
-                Bėgimas
+                Renginys: {id}
             </Typography>
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
@@ -106,7 +118,7 @@ function RunView() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Redaguoti bėgimą
+                            Redaguoti renginį
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -123,11 +135,12 @@ function RunView() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Pašalinti bėgimą
+                            Pašalinti renginį
                         </Typography>
                     </CardContent>
                 </CardActionArea>
             </Card>
+
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleMakeCommentClick}>
                     <CardContent>
@@ -155,13 +168,12 @@ function RunView() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Registruotis į bėgimo renginį
+                            Registruotis į renginį
                         </Typography>
                     </CardContent>
                 </CardActionArea>
             </Card>
-            
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
                 <CardActionArea onClick={handleWeatherClick}>
                     <CardContent>
                         <Typography
