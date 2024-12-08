@@ -10,7 +10,8 @@ function RunView() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [eventDetails, setEventDetails] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const { id: runId } = useParams();
+    console.log(runId);
     useEffect(() => {
         const loadEventDetails = async () => {
             try {
@@ -28,7 +29,7 @@ function RunView() {
     }, [id, navigate]);
 
     const handleCardClick = () => {
-        navigate(`/run/${id}/comments`);
+        navigate(`/run/${runId}/comments`);
     };
 
     const handleEventRegistration = () => {
@@ -74,7 +75,7 @@ function RunView() {
     };
 
     const handleMakeCommentClick = () => {
-        navigate(`/run/${id}/make-comment`);
+        navigate(`/make-comment/${runId}`);
     };
 
     if (loading) {

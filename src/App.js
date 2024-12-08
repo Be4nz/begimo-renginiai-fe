@@ -33,8 +33,8 @@ function App() {
 					<Route path='/register-event-view' element={<EventRegistrationView />} />
 					<Route path='/update-event-registration' element={<UpdateEventRegistration />} />
 					<Route path='/calendar' element={<Calendar />} />
-					<Route path='/make-comment' element={<MakeCommentForm />} />
-					<Route path='/update-comment' element={<UpdateCommentForm />} />
+					<Route path='/make-comment/:id' element={<MakeCommentForm />} />
+					<Route path='/update-comment/:id' element={<UpdateCommentForm />} />
 					<Route path='/changepassword' element={<ChangePassword />} />
 					<Route path='/create-run/:id' element={<CreateRun />} />
 					<Route path='/register' element={<Register />} />

@@ -1,16 +1,39 @@
 import React, { useState } from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { createComment } from '../api/commentAPI';
+import { useParams } from 'react-router-dom';
 
 function MakeCommentForm() {
     const navigate = useNavigate();
+    const { id: runId } = useParams();
     const [comment, setComment] = useState('');
+    const user = localStorage.getItem('user');
     const handleCardClick = () => {
-		navigate('/run/1');
+		navigate(`/run/${runId}`);
 	};
-    
-    const handleSubmit = (event) => {
-		navigate('/run/1/comments');
+    const handleSubmit  = async (e) => {
+		e.preventDefault();
+        if (!comment) {
+            alert('Prašome įvesti komentarą.');
+            return;
+        }
+        try {
+            const commentData = {
+				tekstas: comment,
+				data: new Date().toISOString().split('T')[0], // Today's date
+				// Hardcoded recipient ID (replace with dynamic ID based on email lookup)
+				renginio_id: runId, 
+                autoriaus_id: user, // Hardcoded event ID (replace with dynamic selection if available)
+			};
+            const response = await createComment(commentData);
+            console.log('Event created:', response);
+            alert('Komentaras sukurtas sėkmingai!');
+            navigate(`/run/${runId}/comments`);
+        } catch (error) {
+            alert('Klaida kuriant bėgimą.');
+        }
+        navigate(`/run/${runId}/comments`);
     };
 
     return (
