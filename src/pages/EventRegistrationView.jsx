@@ -43,7 +43,7 @@ function EventRegistrationView() {
                     letterSpacing: 2,
                 }}
             >
-                Registracijų peržiūra
+                Registracijos peržiūra
             </Typography>
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 3 }}>

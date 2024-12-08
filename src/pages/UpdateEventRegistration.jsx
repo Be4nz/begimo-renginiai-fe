@@ -33,7 +33,7 @@ function UpdateEventRegistration() {
                                 fontWeight: 'bold',
                             }}
                         >
-                            Atgal į registracijų peržiūrą
+                            Atgal į registracijos peržiūrą
                         </Typography>
                     </CardContent>
                 </CardActionArea>
