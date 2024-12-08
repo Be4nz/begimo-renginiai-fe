@@ -23,7 +23,7 @@ function InviteList() {
 	const [isModalOpen, setModalOpen] = useState(false);
 	const [selectedInviteId, setSelectedInviteId] = useState(null);
 
-	const receiverId = '2'; // Replace with dynamic receiver ID (e.g., from context or localStorage)
+	const receiverId = localStorage.getItem('user'); // Replace with dynamic receiver ID (e.g., from context or localStorage)
 
 	// Fetch received invites based on receiver ID
 	useEffect(() => {

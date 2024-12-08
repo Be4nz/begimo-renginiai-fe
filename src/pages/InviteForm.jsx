@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { createInvitation } from '../api/inviteAPI'; // Import the API call
+import { fetchUserByEmail } from '../api/userAPI';
+import { useParams } from 'react-router-dom';
 
 function InviteForm() {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState(''); // State for email
 	const [inviteText, setInviteText] = useState(''); // State for invitation text
 	const [loading, setLoading] = useState(false); // State to manage submission state
+
+	const { id } = useParams();
 
 	const handleCardClick = () => {
 		navigate('/run/1');
@@ -24,14 +28,29 @@ function InviteForm() {
 	const handleSubmit = async () => {
 		setLoading(true); // Show loading state
 		try {
+			const receiver = await fetchUserByEmail(email);
+
+			if (!receiver) {
+				// User not found, exit early
+				console.log('No user found with the provided email.');
+				setLoading(false);
+				return;
+			}
+
 			const invitationData = {
 				tekstas: inviteText,
 				data: new Date().toISOString().split('T')[0], // Today's date
 				statusas: 'Pending', // Default status
-				siuntejo_id: 1, // Hardcoded sender ID (replace with dynamic ID if available)
-				gavejo_id: 2, // Hardcoded recipient ID (replace with dynamic ID based on email lookup)
-				renginio_id: 5, // Hardcoded event ID (replace with dynamic selection if available)
+				siuntejo_id: parseInt(localStorage.getItem('user')), // Convert to integer, default to 0 if null
+				gavejo_id: receiver.id, // Convert to integer
+				renginio_id: parseInt(id), // Convert to integer (since id comes from useParams)
 			};
+
+			const user = localStorage.getItem('user');
+
+			console.log(user);
+
+			console.log(invitationData);
 
 			const response = await createInvitation(invitationData);
 			console.log('Invitation created successfully:', response);
