@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardActionArea, CardContent } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import RunDeleteConfirm from '../components/modal/RunDeleteConfirm';
-import { deleteEventById } from '../api/eventAPI';
+import { fetchEventById, deleteEventById } from '../api/eventAPI';
 
 function RunView() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [isModalOpen, setModalOpen] = useState(false);
+    const [eventDetails, setEventDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadEventDetails = async () => {
+            try {
+                const event = await fetchEventById(id);
+                setEventDetails(event);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching event details:', error);
+                alert('Nepavyko gauti renginio informacijos.');
+                navigate('/run-list');
+            }
+        };
+
+        loadEventDetails();
+    }, [id, navigate]);
 
     const handleCardClick = () => {
         navigate(`/run/${id}/comments`);
@@ -18,11 +36,11 @@ function RunView() {
     };
 
     const handleEventRegistration = () => {
-        navigate('/register-event-view');
+        navigate(`/register-event/${id}`);
     };
 
     const handleEventRegistrationUpdate = () => {
-        navigate('/update-event-registration');
+        navigate(`/update-event-registration/${id}`);
     };
 
     const handleEditRun = () => {
@@ -56,29 +74,44 @@ function RunView() {
     };
 
     const handleMakeCommentClick = () => {
-        navigate('/make-comment');
+        navigate(`/run/${id}/make-comment`);
     };
 
+    if (loading) {
+        return <Typography variant="h5">Kraunama...</Typography>;
+    }
+
     return (
-        <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' height='100vh' padding={3}>
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" padding={3}>
             <Typography
-                variant='h3'
-                component='h1'
+                variant="h3"
+                component="h1"
                 sx={{
                     fontWeight: 'bold',
                     marginBottom: 3,
                     letterSpacing: 2,
                 }}
             >
-                Renginys: {id}
+                Renginys: {eventDetails.pavadinimas}
             </Typography>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+            <Box sx={{ maxWidth: 500, marginBottom: 3, boxShadow: 3, padding: 3, borderRadius: 2 }}>
+                <Typography variant="h6"><strong>Aprašymas:</strong> {eventDetails.aprasymas}</Typography>
+                <Typography variant="h6"><strong>Data:</strong> {new Date(eventDetails.data).toLocaleDateString()}</Typography>
+                <Typography variant="h6"><strong>Pradžios laikas:</strong> {eventDetails.pradzios_laikas}</Typography>
+                <Typography variant="h6"><strong>Pabaigos laikas:</strong> {eventDetails.pabaigos_laikas}</Typography>
+                <Typography variant="h6"><strong>Adresas:</strong> {eventDetails.adresas}</Typography>
+                <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
+                <Typography variant="h6"><strong>Miestas ID:</strong> {eventDetails.miestas_id}</Typography>
+            </Box>
+
+            {/* Links for Comments, Invite, Edit, Delete, etc. */}
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleCardClick}>
                     <CardContent>
                         <Typography
-                            variant='h5'
-                            component='div'
+                            variant="h5"
+                            component="div"
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
@@ -90,12 +123,12 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleInviteClick}>
                     <CardContent>
                         <Typography
-                            variant='h5'
-                            component='div'
+                            variant="h5"
+                            component="div"
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
@@ -107,12 +140,12 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleEditRun}>
                     <CardContent>
                         <Typography
-                            variant='h5'
-                            component='div'
+                            variant="h5"
+                            component="div"
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
@@ -124,12 +157,12 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleDeleteRun}>
                     <CardContent>
                         <Typography
-                            variant='h5'
-                            component='div'
+                            variant="h5"
+                            component="div"
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
@@ -141,12 +174,12 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2, marginBottom: 2 }}>
                 <CardActionArea onClick={handleMakeCommentClick}>
                     <CardContent>
                         <Typography
-                            variant='h5'
-                            component='div'
+                            variant="h5"
+                            component="div"
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
@@ -157,12 +190,13 @@ function RunView() {
                     </CardContent>
                 </CardActionArea>
             </Card>
+
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleEventRegistration}>
                     <CardContent>
                         <Typography
-                            variant='h5'
-                            component='div'
+                            variant="h5"
+                            component="div"
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
@@ -173,7 +207,8 @@ function RunView() {
                     </CardContent>
                 </CardActionArea>
             </Card>
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleWeatherClick}>
                     <CardContent>
                         <Typography

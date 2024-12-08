@@ -56,7 +56,7 @@ export const fetchEventById = async (id) => {
 
 export const editEventById = async (eventId, updatedData) => {
     try {
-        const response = await axiosInstance.put(`/event/editevent/${eventId}`, updatedData);
+        const response = await axiosInstance.put(`/event/update/${eventId}`, updatedData);
         return response.data;
     } catch (error) {
         console.error('Error editing event:', error.response?.data || error.message);

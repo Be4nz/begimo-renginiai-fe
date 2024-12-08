@@ -8,61 +8,62 @@ import {
     Button,
     Checkbox,
     FormControlLabel,
+    MenuItem,
+    Select,
     FormControl,
     InputLabel,
-    Select,
-    MenuItem,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchEventById, editEventById, fetchCities } from '../api/eventAPI';
 
-const EditRun = () => {
-    const navigate = useNavigate();
-    const { id } = useParams();
+const formatDateForInput = (date) => {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+};
 
+const EditRun = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        date: '',
-        startTime: '',
-        endTime: '',
-        distance: '',
-        location: '',
-        website: '',
-        facebookLink: '',
-        address: '',
-        private: false,
-        photo: '',
-        coordinate: '',
-        cityId: '', // City selection
+        pavadinimas: '',
+        aprasymas: '',
+        data: '',
+        pradzios_laikas: '',
+        pabaigos_laikas: '',
+        internetinio_puslapio_nuoroda: '',
+        facebook_nuoroda: '',
+        adresas: '',
+        privatus: false,
+        nuotrauka: '',
+        koordinate: '',
+        miestas_id: '',
     });
 
-    const [cities, setCities] = useState([]); // To hold city list
+    const [cities, setCities] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchEventAndCities = async () => {
+        const loadEventAndCities = async () => {
             try {
-                const [event, cityList] = await Promise.all([
+                const [eventData, cityList] = await Promise.all([
                     fetchEventById(id),
                     fetchCities(),
                 ]);
 
                 setFormData({
-                    name: event.pavadinimas || '',
-                    description: event.aprasymas || '',
-                    date: event.data || '',
-                    startTime: event.pradzios_laikas || '',
-                    endTime: event.pabaigos_laikas || '',
-                    distance: event.atstumas || '',
-                    location: event.vieta || '',
-                    website: event.internetinio_puslapio_nuoroda || '',
-                    facebookLink: event.facebook_nuoroda || '',
-                    address: event.adresas || '',
-                    private: event.privatus || false,
-                    photo: event.nuotrauka || '',
-                    coordinate: event.koordinate || '',
-                    cityId: event.miestas_id || '', // Pre-fill city selection
+                    pavadinimas: eventData.pavadinimas || '',
+                    aprasymas: eventData.aprasymas || '',
+                    data: formatDateForInput(eventData.data),
+                    pradzios_laikas: eventData.pradzios_laikas || '',
+                    pabaigos_laikas: eventData.pabaigos_laikas || '',
+                    internetinio_puslapio_nuoroda: eventData.internetinio_puslapio_nuoroda || '',
+                    facebook_nuoroda: eventData.facebook_nuoroda || '',
+                    adresas: eventData.adresas || '',
+                    privatus: eventData.privatus || false,
+                    nuotrauka: eventData.nuotrauka || '',
+                    koordinate: eventData.koordinate || '',
+                    miestas_id: eventData.miestas_id || '',
                 });
 
                 setCities(cityList);
@@ -70,35 +71,39 @@ const EditRun = () => {
             } catch (error) {
                 console.error('Error fetching event or cities:', error);
                 alert('Nepavyko gauti renginio arba miestų duomenų.');
-                navigate('/run-list');
+                navigate(`/run/${id}`);
             }
         };
 
-        fetchEventAndCities();
+        loadEventAndCities();
     }, [id, navigate]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData((prev) => ({
-            ...prev,
+        setFormData({
+            ...formData,
             [name]: type === 'checkbox' ? checked : value,
-        }));
-    };
-
-    const handleEdit = async (e) => {
-        e.preventDefault();
-        try {
-            await editEventById(id, formData);
-            alert('Renginys sėkmingai atnaujintas.');
-            navigate(`/run/${id}`);
-        } catch (error) {
-            console.error('Error updating event:', error);
-            alert('Įvyko klaida atnaujinant renginį.');
-        }
+        });
     };
 
     const handleCancel = () => {
         navigate(`/run/${id}`);
+    };
+
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.miestas_id) {
+            alert('Prašome pasirinkti miestą.');
+            return;
+        }
+        try {
+            const response = await editEventById(id, formData);
+            console.log('Event updated:', response);
+            alert('Bėgimas atnaujintas sėkmingai!');
+            navigate(`/run/${id}`);
+        } catch (error) {
+            alert('Klaida atnaujinant bėgimą.');
+        }
     };
 
     if (loading) {
@@ -106,20 +111,26 @@ const EditRun = () => {
     }
 
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" padding={3}>
-            <Card sx={{ maxWidth: 500, width: '100%', padding: 4, boxShadow: 3 }}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            padding={3}
+        >
+            <Card sx={{ maxWidth: 500, padding: 4, boxShadow: 3 }}>
                 <CardContent>
                     <Typography variant="h4" component="div" gutterBottom>
-                        Redaguoti bėgimą
+                        Redaguoti renginį
                     </Typography>
-                    <form onSubmit={handleEdit}>
+                    <form onSubmit={handleFormSubmit}>
                         <Box sx={{ mb: 3 }}>
                             <TextField
                                 fullWidth
                                 label="Bėgimo pavadinimas"
                                 variant="outlined"
-                                name="name"
-                                value={formData.name}
+                                name="pavadinimas"
+                                value={formData.pavadinimas}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -129,8 +140,8 @@ const EditRun = () => {
                                 fullWidth
                                 label="Aprašymas"
                                 variant="outlined"
-                                name="description"
-                                value={formData.description}
+                                name="aprasymas"
+                                value={formData.aprasymas}
                                 onChange={handleInputChange}
                                 multiline
                                 rows={3}
@@ -142,10 +153,10 @@ const EditRun = () => {
                                 fullWidth
                                 label="Data"
                                 variant="outlined"
-                                name="date"
+                                name="data"
                                 type="date"
                                 InputLabelProps={{ shrink: true }}
-                                value={formData.date}
+                                value={formData.data}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -155,10 +166,10 @@ const EditRun = () => {
                                 fullWidth
                                 label="Pradžios laikas"
                                 variant="outlined"
-                                name="startTime"
+                                name="pradzios_laikas"
                                 type="time"
                                 InputLabelProps={{ shrink: true }}
-                                value={formData.startTime}
+                                value={formData.pradzios_laikas}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -168,33 +179,21 @@ const EditRun = () => {
                                 fullWidth
                                 label="Pabaigos laikas"
                                 variant="outlined"
-                                name="endTime"
+                                name="pabaigos_laikas"
                                 type="time"
                                 InputLabelProps={{ shrink: true }}
-                                value={formData.endTime}
-                                onChange={handleInputChange}
-                                required
-                            />
-                        </Box>
-                        <Box sx={{ mb: 3 }}>
-                            <TextField
-                                fullWidth
-                                label="Atstumas (km)"
-                                variant="outlined"
-                                name="distance"
-                                type="number"
-                                value={formData.distance}
+                                value={formData.pabaigos_laikas}
                                 onChange={handleInputChange}
                                 required
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
                             <FormControl fullWidth>
-                                <InputLabel id="city-label">Pasirinkite miestą</InputLabel>
+                                <InputLabel id="miestas-label">Pasirinkite miestą</InputLabel>
                                 <Select
-                                    labelId="city-label"
-                                    name="cityId"
-                                    value={formData.cityId}
+                                    labelId="miestas-label"
+                                    name="miestas_id"
+                                    value={formData.miestas_id}
                                     onChange={handleInputChange}
                                     required
                                 >
@@ -211,8 +210,8 @@ const EditRun = () => {
                                 fullWidth
                                 label="Adresas"
                                 variant="outlined"
-                                name="address"
-                                value={formData.address}
+                                name="adresas"
+                                value={formData.adresas}
                                 onChange={handleInputChange}
                                 required
                             />
@@ -222,9 +221,9 @@ const EditRun = () => {
                                 fullWidth
                                 label="Internetinio puslapio nuoroda"
                                 variant="outlined"
-                                name="website"
+                                name="internetinio_puslapio_nuoroda"
                                 type="url"
-                                value={formData.website}
+                                value={formData.internetinio_puslapio_nuoroda}
                                 onChange={handleInputChange}
                             />
                         </Box>
@@ -233,9 +232,9 @@ const EditRun = () => {
                                 fullWidth
                                 label="Facebook nuoroda"
                                 variant="outlined"
-                                name="facebookLink"
+                                name="facebook_nuoroda"
                                 type="url"
-                                value={formData.facebookLink}
+                                value={formData.facebook_nuoroda}
                                 onChange={handleInputChange}
                             />
                         </Box>
@@ -244,9 +243,9 @@ const EditRun = () => {
                                 fullWidth
                                 label="Nuotrauka (URL)"
                                 variant="outlined"
-                                name="photo"
+                                name="nuotrauka"
                                 type="url"
-                                value={formData.photo}
+                                value={formData.nuotrauka}
                                 onChange={handleInputChange}
                             />
                         </Box>
@@ -255,18 +254,18 @@ const EditRun = () => {
                                 fullWidth
                                 label="Koordinatė"
                                 variant="outlined"
-                                name="coordinate"
-                                type="text"
-                                value={formData.coordinate}
+                                name="koordinate"
+                                value={formData.koordinate}
                                 onChange={handleInputChange}
+                                required
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        name="private"
-                                        checked={formData.private}
+                                        name="privatus"
+                                        checked={formData.privatus}
                                         onChange={handleInputChange}
                                     />
                                 }
