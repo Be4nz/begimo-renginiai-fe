@@ -22,7 +22,7 @@ function Login() {
 	const saveUser = (user, otherData) =>{
 		console.log(otherData);
 		localStorage.setItem('user', user);
-		localStorage.setItem('full_user', otherData);
+		localStorage.setItem('full_user', JSON.stringify(otherData));
 
 		console.log(localStorage.getItem('full_user'));
 	}
