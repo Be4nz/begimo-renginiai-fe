@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Card, CardActionArea, CardContent } from '@mui/material';
+import { Box, Typography, Card, Grid, CardActionArea, CardContent, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchPublicEvents } from '../api/eventAPI';
+import defaultImage from '../images/default.jpg'; 
 
 function RunList() {
 	const [events, setEvents] = useState([]);
@@ -50,31 +51,53 @@ function RunList() {
 					letterSpacing: 2,
 				}}
 			>
-				Bėgimai
+				Pagrindinis langas
 			</Typography>
 
-			{events.map((event) => (
-				<Card
-					key={event.id}
-					sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}
-				>
-					<CardActionArea onClick={() => handleCardClickRun(event.id)}>
-						<CardContent>
-							<Typography
-								variant='h5'
-								component='div'
-								sx={{
-									textAlign: 'center',
-									fontWeight: 'bold',
-								}}
-							>
-								{event.pavadinimas}
-							</Typography>
-						</CardContent>
-					</CardActionArea>
-				</Card>
-			))}
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
+			<Grid container spacing={3} justifyContent="center" marginBottom={2}>
+                {events.map((event) => (
+                    <Grid item xs={12} sm={6} md={5} key={event.id}>
+                        <Card
+                            sx={{
+                                borderRadius: 2,
+                                boxShadow: 3,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <CardActionArea onClick={() => handleCardClickRun(event.id)}>
+                                <CardMedia
+                                    component="img"
+                                    sx={{
+                                        height: 100,
+                                        width: 100,
+                                        objectFit: 'cover',
+                                        margin: '16px auto',
+                                        borderRadius: 2,
+                                    }}
+                                    image={event.nuotrauka || defaultImage}
+                                    alt={event.pavadinimas}
+                                />
+                                <CardContent>
+                                    <Typography
+                                        variant='h5'
+                                        component='div'
+                                        sx={{
+                                            textAlign: 'center',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {event.pavadinimas}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2}}>
 				<CardActionArea onClick={handleCardClickRegister}>
 					<CardContent>
 						<Typography
@@ -90,7 +113,7 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
 				<CardActionArea onClick={handleCardClickCreate}>
 					<CardContent>
 						<Typography
@@ -106,7 +129,7 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
 				<CardActionArea onClick={handleCardClickUser}>
 					<CardContent>
 						<Typography
@@ -122,7 +145,7 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2  }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
 				<CardActionArea onClick={handleCardClickInvite}>
 					<CardContent>
 						<Typography
