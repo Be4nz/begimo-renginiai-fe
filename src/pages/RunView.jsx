@@ -31,10 +31,6 @@ function RunView() {
         navigate(`/run/${id}/comments`);
     };
 
-	const handleCardClick = () => {
-		navigate('/run/1/comments');
-	};
-
     const handleEventRegistration = () => {
         navigate(`/register-event/${id}`);
     };
@@ -43,16 +39,20 @@ function RunView() {
         navigate(`/update-event-registration/${id}`);
     };
 
+    const handleInviteClick = () => {
+		navigate(`/invite-form/${id}`);
+	};
+
     const handleEditRun = () => {
         navigate(`/edit-run/${id}`);
     };
 
-	const handleEditRun = () => {
-		navigate('/edit-run/1');
-	};
-
 	const handleDeleteRun = () => {
 		setModalOpen(true);
+	};
+
+    const handleCloseModal = () => {
+		setModalOpen(false);
 	};
 
     const handleConfirmDelete = async () => {
@@ -174,40 +174,6 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2, marginBottom: 2 }}>
-                <CardActionArea onClick={handleMakeCommentClick}>
-                    <CardContent>
-                        <Typography
-                            variant="h5"
-                            component="div"
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Kurti komentarą
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
-                <CardActionArea onClick={handleEventRegistration}>
-                    <CardContent>
-                        <Typography
-                            variant="h5"
-                            component="div"
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Registruotis į renginį
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleWeatherClick}>
                     <CardContent>
@@ -234,40 +200,6 @@ function RunView() {
 							}}
 						>
 							Siųsti pakvietimą
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-			</Card>
-
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-				<CardActionArea onClick={handleEditRun}>
-					<CardContent>
-						<Typography
-							variant='h5'
-							component='div'
-							sx={{
-								textAlign: 'center',
-								fontWeight: 'bold',
-							}}
-						>
-							Redaguoti bėgimą
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-			</Card>
-
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
-				<CardActionArea onClick={handleDeleteRun}>
-					<CardContent>
-						<Typography
-							variant='h5'
-							component='div'
-							sx={{
-								textAlign: 'center',
-								fontWeight: 'bold',
-							}}
-						>
-							Pašalinti bėgimą
 						</Typography>
 					</CardContent>
 				</CardActionArea>
