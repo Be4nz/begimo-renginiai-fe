@@ -29,10 +29,10 @@ function App() {
 				<NavigationBar />
 				<Routes>
 					<Route path='/login' element={<Login />} />
-					<Route path='/register-event' element={<EventRegistration/>}/>
-					<Route path='/register-event-view' element={<EventRegistrationView/>}/>
-					<Route path='/update-event-registration' element={<UpdateEventRegistration/>}/>
-					<Route path="/calendar" element={<Calendar />} />
+					<Route path='/register-event' element={<EventRegistration />} />
+					<Route path='/register-event-view' element={<EventRegistrationView />} />
+					<Route path='/update-event-registration' element={<UpdateEventRegistration />} />
+					<Route path='/calendar' element={<Calendar />} />
 					<Route path='/make-comment' element={<MakeCommentForm />} />
 					<Route path='/update-comment' element={<UpdateCommentForm />} />
 					<Route path='/changepassword' element={<ChangePassword />} />
@@ -45,7 +45,7 @@ function App() {
 					<Route path='/run/:id/comments' element={<CommentList />} />
 					<Route path='/run/:id/weather' element={<RunWheater />} />
 					<Route path='/changepassword/:id/' element={<NewPassword />} />
-					<Route path='/invite-form' element={<InviteForm />} />
+					<Route path='/invite-form/:id' element={<InviteForm />} />
 					<Route path='/invite-list' element={<InviteList />} />
 					<Route path='/sent-invite-list' element={<SentInviteList />} />
 					<Route path='*' element={<Navigate to={'/login'} replace />} />

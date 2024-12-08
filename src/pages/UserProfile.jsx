@@ -10,12 +10,14 @@ import dayjs from 'dayjs';
 function UserProfile() {
 	const [isEditing, setIsEditing] = useState(false);
 	const [profile, setProfile] = useState({});
+	const [runningStatistics, setRunningStatistics] = useState({});
 	const [loading, setLoading] = useState(true);
 
 	const userId = useParams().id;
 	const currentUserId = localStorage.getItem('user');
 
 	React.useEffect(() => {
+		getRunningStatistics();
 		fetch(`http://localhost:5000/user/get/${userId}`, {
 			method: 'GET',
 			headers: {
@@ -38,6 +40,29 @@ function UserProfile() {
 				}
 			});
 	}, [userId]);
+
+	const getRunningStatistics = () => {
+		fetch(`http://localhost:5000/user/getstats/${userId}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + localStorage.getItem('token'),
+			},
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				console.log(data[0]);
+				setRunningStatistics(data[0]);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+				if (error.message === 'Failed to fetch') {
+					alert('Serveris nepasiekiamas');
+				} else {
+					alert('Klaida: ' + error.message);
+				}
+			});
+	};
 
 	const handleEditClick = () => {
 		if (isEditing) {
@@ -215,6 +240,20 @@ function UserProfile() {
 			{currentUserId === String(userId) ? <Button style={{marginBottom:'3em'}} variant='contained' color='primary' onClick={handleEditClick} sx={{ marginTop: 2 }}>
 				{isEditing ? 'Išsaugoti' : 'Pakeisti'}
 			</Button> : <></>}
+
+			{runningStatistics && (
+				<Box sx={{ width: '100%', maxWidth: 800, padding: 3, border: '1px solid #ccc', borderRadius: 2, textAlign: 'center', marginTop: 3 }}>
+					<Typography variant='h5'>Naudotojo bėgimo statistika</Typography>
+					<Typography variant='h6'>Bėgimų skaičius: {runningStatistics.total_runs}</Typography>
+					<Typography variant='h6'>Bendra distancija: {runningStatistics.total_distance} m</Typography>
+					<Typography variant='h6'>Bendrai bėgtas laikas: {(runningStatistics.total_time_seconds / 60).toFixed(0)} min</Typography>
+					<Typography variant='h6'>Vidutinis tempas: {runningStatistics.average_pace} min/km</Typography>
+				</Box>
+			)}
+				
+
+			
+			
 		</Box>
 	);
 }
