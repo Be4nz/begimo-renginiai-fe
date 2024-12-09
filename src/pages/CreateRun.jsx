@@ -89,8 +89,11 @@ const CreateRun = () => {
             alert('Prašome pasirinkti miestą.');
             return;
         }
+    
+        const organizatorius_id = localStorage.getItem('user');
+    
         try {
-            const response = await postEvent(formData);
+            const response = await postEvent({ ...formData, organizatorius_id });
             console.log('Event created:', response);
             alert('Bėgimas sukurtas sėkmingai!');
             navigate('/run-list');
@@ -98,6 +101,7 @@ const CreateRun = () => {
             alert('Klaida kuriant bėgimą.');
         }
     };
+    
 
     return (
         <Box

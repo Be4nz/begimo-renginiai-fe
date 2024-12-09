@@ -107,6 +107,9 @@ function RunView() {
                 <Typography variant="h6"><strong>Adresas:</strong> {eventDetails.adresas}</Typography>
                 <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
                 <Typography variant="h6"><strong>Miestas:</strong> {eventDetails.miestas_pavadinimas}</Typography>
+                <Typography variant="h6">
+                <strong>Organizatorius:</strong> {eventDetails.organizatorius_vardas} {eventDetails.organizatorius_pavarde}
+                </Typography>
             </Box>
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
