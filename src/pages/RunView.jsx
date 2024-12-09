@@ -47,6 +47,10 @@ function RunView() {
         navigate(`/edit-run/${id}`);
     };
 
+    const handleBack = () => {
+        navigate(`/run-list`);
+    };
+
 	const handleDeleteRun = () => {
 		setModalOpen(true);
 	};
@@ -102,10 +106,9 @@ function RunView() {
                 <Typography variant="h6"><strong>Pabaigos laikas:</strong> {eventDetails.pabaigos_laikas}</Typography>
                 <Typography variant="h6"><strong>Adresas:</strong> {eventDetails.adresas}</Typography>
                 <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
-                <Typography variant="h6"><strong>Miestas ID:</strong> {eventDetails.miestas_id}</Typography>
+                <Typography variant="h6"><strong>Miestas:</strong> {eventDetails.miestas_pavadinimas}</Typography>
             </Box>
 
-            {/* Links for Comments, Invite, Edit, Delete, etc. */}
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleCardClick}>
                     <CardContent>
@@ -188,7 +191,7 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3 }}>
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
 				<CardActionArea onClick={handleInviteClick}>
 					<CardContent>
 						<Typography
@@ -242,6 +245,16 @@ function RunView() {
 					<CardContent>
 						<Typography variant='h5' component='div' sx={{ textAlign: 'center', fontWeight: 'bold' }}>
 							Orų prognozė
+						</Typography>
+					</CardContent>
+				</CardActionArea>
+			</Card>
+
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+				<CardActionArea onClick={handleBack}>
+					<CardContent>
+						<Typography variant='h5' component='div' sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+							Atgal į pagrindinį puslapį
 						</Typography>
 					</CardContent>
 				</CardActionArea>
