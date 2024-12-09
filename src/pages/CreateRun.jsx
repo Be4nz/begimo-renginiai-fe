@@ -41,7 +41,7 @@ const CreateRun = () => {
         adresas: '',
         privatus: false,
         nuotrauka: '',
-        koordinate: '', // Will be set automatically
+        koordinate: '',
         miestas_id: '',
     });
 

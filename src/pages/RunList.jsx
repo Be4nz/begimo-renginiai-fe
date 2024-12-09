@@ -34,8 +34,10 @@ function RunList() {
 	};
 	
 	const handleCardClickUser = () => {
-		navigate('/user/1');
+		const currentUserId = localStorage.getItem('user');
+		navigate(`/user/${currentUserId}`);
 	};
+	
 	
 	const handleCardClickRegister = () => {
 		navigate('/register');
