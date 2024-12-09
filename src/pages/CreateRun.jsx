@@ -16,6 +16,19 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { postEvent, fetchCities } from '../api/eventAPI';
 
+const cityCoordinates = {
+    1: "54.8985,23.9036", // Kaunas
+    2: "54.6872,25.2797", // Vilnius
+    3: "55.7033,21.1443", // Klaipėda
+    4: "55.9333,23.3167", // Šiauliai
+    5: "55.7333,24.35",   // Panevėžys
+    6: "54.4,24.05",      // Alytus
+    7: "54.5599,23.3498", // Marijampolė
+    8: "55.5,25.6",       // Utena
+    9: "55.9833,22.25",   // Telšiai
+    10: "55.25,22.2897",  // Tauragė
+};
+
 const CreateRun = () => {
     const [formData, setFormData] = useState({
         pavadinimas: '',
@@ -28,7 +41,7 @@ const CreateRun = () => {
         adresas: '',
         privatus: false,
         nuotrauka: '',
-        koordinate: '',
+        koordinate: '', // Will be set automatically
         miestas_id: '',
     });
 
@@ -54,10 +67,20 @@ const CreateRun = () => {
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData({
-            ...formData,
-            [name]: type === 'checkbox' ? checked : value,
-        });
+
+        if (name === 'miestas_id') {
+            const coordinates = cityCoordinates[value] || '';
+            setFormData({
+                ...formData,
+                [name]: value,
+                koordinate: coordinates,
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: type === 'checkbox' ? checked : value,
+            });
+        }
     };
 
     const handleFormSubmit = async (e) => {
@@ -213,17 +236,6 @@ const CreateRun = () => {
                                 type="url"
                                 value={formData.nuotrauka}
                                 onChange={handleInputChange}
-                            />
-                        </Box>
-                        <Box sx={{ mb: 3 }}>
-                            <TextField
-                                fullWidth
-                                label="Koordinatė"
-                                variant="outlined"
-                                name="koordinate"
-                                value={formData.koordinate}
-                                onChange={handleInputChange}
-                                required
                             />
                         </Box>
                         <Box sx={{ mb: 3 }}>
