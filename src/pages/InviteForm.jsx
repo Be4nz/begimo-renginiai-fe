@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
+import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button, Snackbar, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { createInvitation } from '../api/inviteAPI'; // Import the API call
 import { fetchUserByEmail } from '../api/userAPI';
@@ -10,6 +10,8 @@ function InviteForm() {
 	const [email, setEmail] = useState(''); // State for email
 	const [inviteText, setInviteText] = useState(''); // State for invitation text
 	const [loading, setLoading] = useState(false); // State to manage submission state
+	const [errorMessage, setErrorMessage] = useState(''); // State for error message
+	const [openSnackbar, setOpenSnackbar] = useState(false); // State for Snackbar visibility
 
 	const { id } = useParams();
 
@@ -27,12 +29,15 @@ function InviteForm() {
 
 	const handleSubmit = async () => {
 		setLoading(true); // Show loading state
+		setErrorMessage(''); // Clear any previous error messages
+
 		try {
 			const receiver = await fetchUserByEmail(email);
 
 			if (!receiver) {
 				// User not found, exit early
-				console.log('No user found with the provided email.');
+				setErrorMessage('Naudotojas nerastas');
+				setOpenSnackbar(true); // Show error Snackbar
 				setLoading(false);
 				return;
 			}
@@ -47,9 +52,7 @@ function InviteForm() {
 			};
 
 			const user = localStorage.getItem('user');
-
 			console.log(user);
-
 			console.log(invitationData);
 
 			const response = await createInvitation(invitationData);
@@ -57,10 +60,15 @@ function InviteForm() {
 			navigate('/sent-invite-list'); // Redirect after successful submission
 		} catch (error) {
 			console.error('Error creating invitation:', error);
-			alert('Failed to send the invitation. Please try again.');
+			alert('Naudotojas nerastas');
 		} finally {
 			setLoading(false); // Reset loading state
 		}
+	};
+
+	// Close Snackbar
+	const handleCloseSnackbar = () => {
+		setOpenSnackbar(false);
 	};
 
 	return (
@@ -118,6 +126,13 @@ function InviteForm() {
 					{loading ? 'Siunčiama...' : 'Siųsti pakvietimą'}
 				</Button>
 			</Box>
+
+			{/* Snackbar for error message */}
+			<Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+				<Alert onClose={handleCloseSnackbar} severity='error' sx={{ width: '100%' }}>
+					{errorMessage}
+				</Alert>
+			</Snackbar>
 		</Box>
 	);
 }

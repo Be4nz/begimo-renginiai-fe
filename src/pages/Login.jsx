@@ -19,13 +19,13 @@ function Login() {
 		localStorage.setItem('token', userToken);
 	};
 
-	const saveUser = (user, otherData) =>{
+	const saveUser = (user, otherData) => {
 		console.log(otherData);
 		localStorage.setItem('user', user);
 		localStorage.setItem('full_user', JSON.stringify(otherData));
 
 		console.log(localStorage.getItem('full_user'));
-	}
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();

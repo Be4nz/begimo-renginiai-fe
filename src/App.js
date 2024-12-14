@@ -22,6 +22,7 @@ import EventRegistration from './pages/EventRegistration';
 import EventRegistrationView from './pages/EventRegistrationView';
 import UpdateEventRegistration from './pages/UpdateEventRegistration';
 import Calendar from './pages/Calendar';
+import InviteView from './pages/InviteView';
 function App() {
 	return (
 		<div className='App'>
@@ -47,6 +48,7 @@ function App() {
 					<Route path='/changepassword/:id/' element={<NewPassword />} />
 					<Route path='/invite-form/:id' element={<InviteForm />} />
 					<Route path='/invite-list' element={<InviteList />} />
+					<Route path='/invite/:id' element={<InviteView />} />
 					<Route path='/sent-invite-list' element={<SentInviteList />} />
 					<Route path='*' element={<Navigate to={'/login'} replace />} />
 				</Routes>

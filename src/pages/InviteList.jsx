@@ -11,6 +11,8 @@ import {
 	CircularProgress,
 	Divider,
 	Button,
+	Snackbar,
+	Alert,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import InviteDeleteConfirm from '../components/modal/InviteDeleteConfirm';
@@ -22,6 +24,8 @@ function InviteList() {
 	const [loading, setLoading] = useState(true);
 	const [isModalOpen, setModalOpen] = useState(false);
 	const [selectedInviteId, setSelectedInviteId] = useState(null);
+	const [successMessage, setSuccessMessage] = useState(''); // New state for success message
+	const [openSnackbar, setOpenSnackbar] = useState(false); // State to control Snackbar visibility
 
 	const receiverId = localStorage.getItem('user'); // Replace with dynamic receiver ID (e.g., from context or localStorage)
 
@@ -59,6 +63,9 @@ function InviteList() {
 				await deleteInvitation(selectedInviteId); // Delete the invitation using API
 				setInvites((prevInvites) => prevInvites.filter((invite) => invite.id !== selectedInviteId));
 				console.log(`Invitation with ID ${selectedInviteId} deleted.`);
+				// Set success message and show Snackbar
+				setSuccessMessage('Kvietimas sėkmingai pašalintas.');
+				setOpenSnackbar(true);
 			} catch (error) {
 				console.error(`Error deleting invitation with ID ${selectedInviteId}:`, error);
 			} finally {
@@ -69,9 +76,19 @@ function InviteList() {
 	};
 
 	// Accept invitation (placeholder for actual function)
-	const handleAcceptInvite = () => {
-		console.log('Invite accepted!');
-		// You can implement accepting invitation functionality here
+	const handleAcceptInvite = (id) => {
+		navigate('/register-event');
+		deleteInvitation(id);
+	};
+
+	// Close Snackbar
+	const handleCloseSnackbar = () => {
+		setOpenSnackbar(false);
+	};
+
+	// Navigate to the Sent Invite List
+	const handleNavigateToSentInviteList = () => {
+		navigate('/sent-invite-list');
 	};
 
 	return (
@@ -102,6 +119,7 @@ function InviteList() {
 									bgcolor: '#f1f1f1',
 								},
 							}}
+							onClick={() => navigate(`/invite/${invite.id}`)}
 						>
 							<ListItemText
 								primary={<Typography variant='h6' color='primary'>{`From: ${invite.siuntejo_id}`}</Typography>}
@@ -109,13 +127,24 @@ function InviteList() {
 								sx={{ marginBottom: 1 }}
 							/>
 							<Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-								<Button variant='contained' color='success' onClick={handleAcceptInvite} sx={{ width: '45%' }}>
+								<Button
+									variant='contained'
+									color='success'
+									onClick={(e) => {
+										e.stopPropagation();
+										handleAcceptInvite(invite.id);
+									}}
+									sx={{ width: '45%' }}
+								>
 									Priimti kvietimą
 								</Button>
 								<Button
 									variant='outlined'
 									color='error'
-									onClick={() => handleDeleteInvite(invite.id)}
+									onClick={(e) => {
+										e.stopPropagation();
+										handleDeleteInvite(invite.id);
+									}}
 									sx={{ width: '45%' }}
 								>
 									Pašalinti
@@ -126,8 +155,20 @@ function InviteList() {
 				</List>
 			)}
 
+			{/* Button to navigate to Sent Invite List */}
+			<Button variant='contained' color='primary' onClick={handleNavigateToSentInviteList} sx={{ marginTop: 3 }}>
+				Peržiūrėti išsiųstus pakvietimus
+			</Button>
+
 			{/* Delete Confirmation Modal */}
 			<InviteDeleteConfirm open={isModalOpen} onClose={handleCloseModal} onConfirm={handleConfirmDelete} />
+
+			{/* Snackbar for success message */}
+			<Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+				<Alert onClose={handleCloseSnackbar} severity='success' sx={{ width: '100%' }}>
+					{successMessage}
+				</Alert>
+			</Snackbar>
 		</Box>
 	);
 }
