@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, Grid, CardActionArea, CardContent, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { fetchPublicEvents } from '../api/eventAPI';
-import defaultImage from '../images/default.jpg'; 
+import defaultImage from '../images/default.jpg';
+import { checkUserIsOrganizer } from '../api/userAPI';
 
 function RunList() {
 	const [events, setEvents] = useState([]);
@@ -25,8 +26,23 @@ function RunList() {
         navigate(`/run/${id}`);
     };
 
-	const handleCardClickCreate = () => {
-		navigate('/create-run/1');
+	const handleCardClickCreate = async () => {
+		try {
+			const user = JSON.parse(localStorage.getItem('user'));
+	
+			console.log(user);
+			const isOrganizer = await checkUserIsOrganizer(user);
+	
+			if (!isOrganizer) {
+				alert('Only organizers can create events.');
+				return;
+			}
+	
+			navigate('/create-run/1');
+		} catch (error) {
+			console.error('Error checking organizer status:', error);
+			alert('Failed to verify organizer status. Please try again.');
+		}
 	};
 
 	const handleCardClickInvite = () => {

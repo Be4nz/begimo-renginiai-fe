@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import RunDeleteConfirm from '../components/modal/RunDeleteConfirm';
 import { fetchEventById, deleteEventById } from '../api/eventAPI';
 
+
 function RunView() {
     const navigate = useNavigate();
     const { id } = useParams();

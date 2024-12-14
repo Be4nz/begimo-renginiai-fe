@@ -35,3 +35,13 @@ export const fetchUserById = async (id) => {
 		throw error;
 	}
 };
+
+export const checkUserIsOrganizer = async (userId) => {
+	try {
+		const response = await axiosInstance.get(`/user/is-organizer/${userId}`);
+		return response.data.isOrganizer;
+	} catch (error) {
+		console.error('Error checking if user is organizer:', error.response?.data || error.message);
+		throw error;
+	}
+};
