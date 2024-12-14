@@ -17,7 +17,7 @@ function NavigationBar() {
 				<Button onClick={() => navigate('/invite-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
 					Pakvietimai
 				</Button>
-				{showAll && (
+					{showAll && (
 					<>
 						<Button onClick={() => navigate('/run/1')} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Bėgimas
@@ -25,12 +25,8 @@ function NavigationBar() {
 						<Button onClick={() => navigate('/run/1/comments')} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Bėgimo komentarai
 						</Button>
-						<Button onClick={() => navigate('/login')} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Prisijungimas
-						</Button>
-						<Button onClick={() => navigate('/register')} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Registracija
-						</Button>
+						{localStorage.getItem('token') ? 
+						<>
 						<Button onClick={() => {
 							const user = localStorage.getItem('user');
 							if (user) {
@@ -41,17 +37,25 @@ function NavigationBar() {
 						}} sx={{ my: 2, color: 'white', display: 'block' }}>
 							Vartotojo profilis
 						</Button>
-						<Button onClick={() => navigate('/changepassword/aaaaa')} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Slaptažodžio pakeitimo forma
-						</Button>
 						<Button onClick={() => {
 							localStorage.removeItem('user');
+							localStorage.removeItem('full_user');
 							localStorage.removeItem('token');
+							localStorage.removeItem('role');
 							navigate('/login');
 							}} sx={{ my: 2, color: 'white', display: 'block' }}>
 								Atsijungti
 						</Button>
-					</>
+					</>: 
+					<>
+						<Button onClick={() => navigate('/login')} sx={{ my: 2, color: 'white', display: 'block' }}>
+							Prisijungimas
+						</Button>
+						<Button onClick={() => navigate('/register')} sx={{ my: 2, color: 'white', display: 'block' }}>
+							Registracija
+						</Button>
+					</>}
+				</>
 				)}
 				<Button onClick={() => setShowAll(!showAll)} sx={{ my: 2, color: 'white', display: 'block' }}>
 					{showAll ? 'Rodyti mažiau' : 'Rodyti visas navigacijas'}
