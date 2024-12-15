@@ -19,6 +19,7 @@ function InviteView() {
 		const loadInvite = async () => {
 			try {
 				const data = await fetchInvitationById(id); // Fetch invite details by ID
+				console.log(data);
 				setInvite(data);
 			} catch (error) {
 				console.error('Error fetching invite details:', error);
@@ -57,7 +58,7 @@ function InviteView() {
 
 	// Handle invite acceptance and navigate to event registration page
 	const handleAcceptInvite = () => {
-		navigate('/register-event');
+		navigate(`/register-event/${invite.renginio_id}`);
 		deleteInvitation(id);
 	};
 

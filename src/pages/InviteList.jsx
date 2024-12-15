@@ -76,8 +76,8 @@ function InviteList() {
 	};
 
 	// Accept invitation (placeholder for actual function)
-	const handleAcceptInvite = (id) => {
-		navigate('/register-event');
+	const handleAcceptInvite = (id, eventId) => {
+		navigate(`/register-event/${eventId}`);
 		deleteInvitation(id);
 	};
 
@@ -132,7 +132,7 @@ function InviteList() {
 									color='success'
 									onClick={(e) => {
 										e.stopPropagation();
-										handleAcceptInvite(invite.id);
+										handleAcceptInvite(invite.id, invite.renginio_id);
 									}}
 									sx={{ width: '45%' }}
 								>
