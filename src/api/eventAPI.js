@@ -93,3 +93,14 @@ export const fetchDistances = async () => {
         throw error;
     }
 };
+
+export const fetchDemographics = async () => {
+    try {
+        const response = await axiosInstance.get('/event/demographics');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching demographics:', error.response?.data || error.message);
+        throw error;
+    }
+};
+

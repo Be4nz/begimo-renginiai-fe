@@ -14,7 +14,7 @@ import {
     InputLabel,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchEventById, editEventById, fetchCities, fetchDistances } from '../api/eventAPI';
+import { fetchEventById, editEventById, fetchCities, fetchDistances,  fetchDemographics } from '../api/eventAPI';
 
 const cityCoordinates = {
     1: "54.8985,23.9036", // Kaunas
@@ -39,6 +39,7 @@ const EditRun = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [distances, setDistances] = useState([]);
+    const [demographics, setDemographics] = useState([]);
     const [formData, setFormData] = useState({
         pavadinimas: '',
         aprasymas: '',
@@ -53,6 +54,7 @@ const EditRun = () => {
         koordinate: '',
         miestas_id: '',
         distancija_id: '',
+        demografija_id: '',
     });
     
 
@@ -62,10 +64,11 @@ const EditRun = () => {
     useEffect(() => {
         const loadEventCitiesAndDistances = async () => {
             try {
-                const [eventData, cityList, distanceList] = await Promise.all([
+                const [eventData, cityList, distanceList, demographicList] = await Promise.all([
                     fetchEventById(id),
                     fetchCities(),
                     fetchDistances(),
+                    fetchDemographics(),
                 ]);
     
                 setFormData({
@@ -82,10 +85,12 @@ const EditRun = () => {
                     koordinate: eventData.koordinate || '',
                     miestas_id: eventData.miestas_id || '',
                     distancija_id: eventData.distancija_id || '',
+                    demografija_id: eventData.demografija_id || '',
                 });
     
                 setCities(cityList);
                 setDistances(distanceList);
+                setDemographics(demographicList);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching event, cities, or distances:', error);
@@ -251,6 +256,22 @@ const EditRun = () => {
                                     {cities.map((city) => (
                                         <MenuItem key={city.id} value={city.id}>
                                             {city.pavadinimas}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel>Demografija</InputLabel>
+                                <Select
+                                    name="demografija_id"
+                                    value={formData.demografija_id}
+                                    onChange={handleInputChange}
+                                >
+                                    {demographics.map((demo) => (
+                                        <MenuItem key={demo.id} value={demo.id}>
+                                            {demo.pavadinimas}
                                         </MenuItem>
                                     ))}
                                 </Select>

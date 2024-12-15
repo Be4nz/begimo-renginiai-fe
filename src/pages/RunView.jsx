@@ -116,18 +116,28 @@ function RunView() {
             </Typography>
 
             <Box sx={{ maxWidth: 500, marginBottom: 3, boxShadow: 3, padding: 3, borderRadius: 2 }}>
-                <Typography variant="h6"><strong>Aprašymas:</strong> {eventDetails.aprasymas}</Typography>
-                <Typography variant="h6"><strong>Data:</strong> {new Date(eventDetails.data).toLocaleDateString()}</Typography>
-                <Typography variant="h6"><strong>Pradžios laikas:</strong> {eventDetails.pradzios_laikas}</Typography>
-                <Typography variant="h6"><strong>Pabaigos laikas:</strong> {eventDetails.pabaigos_laikas}</Typography>
-                <Typography variant="h6"><strong>Adresas:</strong> {eventDetails.adresas}</Typography>
-                <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
-                <Typography variant="h6"><strong>Miestas:</strong> {eventDetails.miestas_pavadinimas}</Typography>
-                <Typography variant="h6"><strong>Distancija:</strong> {eventDetails.distancija_pavadinimas} ({eventDetails.distancija_atstumas} km)</Typography>
-                <Typography variant="h6">
-                    <strong>Organizatorius ID:</strong> {eventDetails.organizatorius_id}
-                </Typography>
-            </Box>
+    <Typography variant="h6"><strong>Aprašymas:</strong> {eventDetails.aprasymas}</Typography>
+    <Typography variant="h6"><strong>Data:</strong> {new Date(eventDetails.data).toLocaleDateString()}</Typography>
+    <Typography variant="h6"><strong>Pradžios laikas:</strong> {eventDetails.pradzios_laikas}</Typography>
+    <Typography variant="h6"><strong>Pabaigos laikas:</strong> {eventDetails.pabaigos_laikas}</Typography>
+    <Typography variant="h6"><strong>Adresas:</strong> {eventDetails.adresas}</Typography>
+    <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
+    <Typography variant="h6"><strong>Miestas:</strong> {eventDetails.miestas_pavadinimas}</Typography>
+    <Typography variant="h6"><strong>Distancija:</strong> {eventDetails.distancija_pavadinimas} ({eventDetails.distancija_atstumas} km)</Typography>
+    <Typography variant="h6"><strong>Organizatorius ID:</strong> {eventDetails.organizatorius_id}</Typography>
+
+    {eventDetails.demografija_pavadinimas && (
+        <>
+            <Typography variant="h6"><strong>Demografija:</strong> {eventDetails.demografija_pavadinimas}</Typography>
+            <Typography variant="h6"><strong>Minimalus amžius:</strong> {eventDetails.minimalus_amzius}</Typography>
+            <Typography variant="h6"><strong>Maksimalus amžius:</strong> {eventDetails.maksimalus_amzius}</Typography>
+            <Typography variant="h6"><strong>Lytis nuo:</strong> {eventDetails.lytis_nuo}</Typography>
+            <Typography variant="h6"><strong>Lytis iki:</strong> {eventDetails.lytis_iki}</Typography>
+            <Typography variant="h6"><strong>Maksimalus dalyvių skaičius:</strong> {eventDetails.maksimalus_skaicius}</Typography>
+        </>
+    )}
+</Box>
+
 
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
