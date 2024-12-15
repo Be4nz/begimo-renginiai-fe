@@ -45,3 +45,40 @@ export const checkUserIsOrganizer = async (userId) => {
 		throw error;
 	}
 };
+
+export const checkUserIsAdmin = async (userId) => {
+	try {
+		const response = await axiosInstance.get(`/user/is-admin/${userId}`);
+		return response.data.isAdmin;
+	} catch (error) {
+		console.error('Error checking if user is admin:', error.response?.data || error.message);
+		throw error;
+	}
+};
+
+export const checkUserCanCreateEvent = async (userId) => {
+	try {
+		const isOrganizerResponse = await axiosInstance.get(`/user/is-organizer/${userId}`);
+		const isOrganizer = isOrganizerResponse.data.isOrganizer;
+
+		const isAdminResponse = await axiosInstance.get(`/user/is-admin/${userId}`);
+		const isAdmin = isAdminResponse.data.isAdmin;
+
+		if (isOrganizer && isAdmin) {
+			return false;
+		}
+
+		if (isOrganizer) {
+			return true;
+		}
+
+		return false;
+	} catch (error) {
+		console.error('Error checking if user can create event:', error.response?.data || error.message);
+		throw error;
+	}
+};
+
+
+
+

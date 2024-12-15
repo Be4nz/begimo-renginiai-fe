@@ -3,6 +3,7 @@ import { Box, Typography, Card, CardActionArea, CardContent } from '@mui/materia
 import { useNavigate, useParams } from 'react-router-dom';
 import RunDeleteConfirm from '../components/modal/RunDeleteConfirm';
 import { fetchEventById, deleteEventById } from '../api/eventAPI';
+import { checkUserIsAdmin } from '../api/userAPI';
 
 
 function RunView() {
@@ -11,13 +12,24 @@ function RunView() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [eventDetails, setEventDetails] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
     const { id: runId } = useParams();
-    console.log(runId);
+
+
+    const currentUserId = JSON.parse(localStorage.getItem('user'));
+
     useEffect(() => {
         const loadEventDetails = async () => {
             try {
                 const event = await fetchEventById(id);
+                console.log('Event details fetched:', event);
                 setEventDetails(event);
+
+                if (currentUserId) {
+                    const adminStatus = await checkUserIsAdmin(currentUserId);
+                    setIsAdmin(adminStatus);
+                }
+
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching event details:', error);
@@ -27,7 +39,7 @@ function RunView() {
         };
 
         loadEventDetails();
-    }, [id, navigate]);
+    }, [id, currentUserId, navigate]);
 
     const handleCardClick = () => {
         navigate(`/run/${runId}/comments`);
@@ -109,7 +121,12 @@ function RunView() {
                 <Typography variant="h6"><strong>Adresas:</strong> {eventDetails.adresas}</Typography>
                 <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
                 <Typography variant="h6"><strong>Miestas:</strong> {eventDetails.miestas_pavadinimas}</Typography>
+                <Typography variant="h6"><strong>Distancija:</strong> {eventDetails.distancija_pavadinimas} ({eventDetails.distancija_atstumas} km)</Typography>
+                <Typography variant="h6">
+                    <strong>Organizatorius ID:</strong> {eventDetails.organizatorius_id}
+                </Typography>
             </Box>
+
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleCardClick}>
@@ -145,39 +162,43 @@ function RunView() {
                 </CardActionArea>
             </Card>
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
-                <CardActionArea onClick={handleEditRun}>
-                    <CardContent>
-                        <Typography
-                            variant="h5"
-                            component="div"
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Redaguoti renginį
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+            {currentUserId === eventDetails.organizatorius_id && (
+                <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+                    <CardActionArea onClick={handleEditRun}>
+                        <CardContent>
+                            <Typography
+                                variant="h5"
+                                component="div"
+                                sx={{
+                                    textAlign: 'center',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Redaguoti renginį
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            )}
 
-            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
-                <CardActionArea onClick={handleDeleteRun}>
-                    <CardContent>
-                        <Typography
-                            variant="h5"
-                            component="div"
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                        >
-                            Pašalinti renginį
-                        </Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
+            {isAdmin && (
+                <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+                    <CardActionArea onClick={handleDeleteRun}>
+                        <CardContent>
+                            <Typography
+                                variant="h5"
+                                component="div"
+                                sx={{
+                                    textAlign: 'center',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                Pašalinti renginį
+                            </Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            )}
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleWeatherClick}>
