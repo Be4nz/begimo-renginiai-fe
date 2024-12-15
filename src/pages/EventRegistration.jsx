@@ -1,31 +1,55 @@
-import React, { useState }  from 'react';
-import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Box, Typography, Card, CardActionArea, CardContent, Checkbox, FormControlLabel, Button } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { registerUser, addEventToGoogleCalendar } from '../api/registrationAPI'; // Ensure this API function is correctly implemented
 
 function EventRegistration() {
+    const { id } = useParams(); // Event ID
     const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [sendReminders, setSendReminders] = useState(false);
     const [message, setMessage] = useState('');
-	const [isModalOpen, setModalOpen] = useState(false);
-    const handleCardClick = () => {
-        navigate('/register-event-view');
-    };
+    const [isModalOpen, setModalOpen] = useState(false);
 
+    const userId = localStorage.getItem('user'); // User ID stored in localStorage
+    const userEmail = localStorage.getItem('userEmail'); // Assuming you also store the user's email in localStorage
+
+    const handleCardClick = () => {
+        navigate(`/register-event-view/${id}`);
+    };
 
     const handleCalendarClick = () => {
         navigate('/calendar');
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        setMessage('Registration Successful!');
+
+        if (!userId || !id) {
+            setMessage('User ID or Event ID is missing.');
+            return;
+        }
+
+        try {
+            const response = await registerUser(
+                parseInt(userId), // Pass userId as an integer
+                parseInt(id), // Pass eventId as an integer
+                sendReminders // Boolean value for reminders
+            );
+await addEventToGoogleCalendar(parseInt(id), userEmail, sendReminders);
+
+            setMessage('Registration Successful! Event added to your Google Calendar.');
+        } catch (error) {
+            console.error('Error registering user:', error);
+            const errorMessage = error.response?.data?.message || 'An error occurred while registering.';
+            setMessage(errorMessage);
+        }
     };
-    
+
     const handleDeleteRegistration = () => {
         setModalOpen(true);
     };
-	const handleCloseModal = () => {
+
+    const handleCloseModal = () => {
         setModalOpen(false);
     };
 
@@ -44,7 +68,7 @@ function EventRegistration() {
                     letterSpacing: 2,
                 }}
             >
-                Registruotis į bėgimo renginį
+                Registruotis į bėgimo renginį {id}
             </Typography>
 
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 3 }}>
@@ -65,30 +89,24 @@ function EventRegistration() {
             </Card>
 
             <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '300px' }}>
-                <TextField
-                    label='Full Name'
-                    variant='outlined'
-                    fullWidth
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    sx={{ marginBottom: 2 }}
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={sendReminders}
+                            onChange={(e) => setSendReminders(e.target.checked)}
+                            color='primary'
+                        />
+                    }
+                    label='Receive Reminders'
                 />
-                <TextField
-                    label='Email'
-                    variant='outlined'
-                    fullWidth
-                    type='email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    sx={{ marginBottom: 2 }}
-                />
+
                 <Button variant='contained' color='primary' type='submit' fullWidth>
                     Registruotis
                 </Button>
             </form>
 
             {message && (
-                <Typography variant='h6' sx={{ marginTop: 2, color: 'green', textAlign: 'center' }}>
+                <Typography variant='h6' sx={{ marginTop: 2, color: message.includes('Successful') ? 'green' : 'red', textAlign: 'center' }}>
                     {message}
                 </Typography>
             )}
@@ -101,7 +119,6 @@ function EventRegistration() {
             >
                 Peržiūrėti kalendorių
             </Button>
-
         </Box>
     );
 }

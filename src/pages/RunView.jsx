@@ -46,7 +46,7 @@ function RunView() {
     };
 
     const handleEventRegistration = () => {
-        navigate(`/register-event/${id}`);
+        navigate(`/register-event-view/${id}`);
     };
 
     const handleEventRegistrationUpdate = () => {

@@ -1,27 +1,47 @@
 import React, { useState } from 'react';
-import { Box, Typography, Card, CardActionArea, CardContent, TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Box, Typography, Card, CardActionArea, CardContent, TextField, Checkbox, FormControlLabel, Button } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { updateRegistration } from '../api/registrationAPI'; // Ensure this API function is implemented
 
 function UpdateEventRegistration() {
+    const { id } = useParams(); // Event ID
     const navigate = useNavigate();
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [sendReminders, setSendReminders] = useState(false);
     const [message, setMessage] = useState('');
 
+    const userId = localStorage.getItem('user'); // User ID stored in localStorage
+
     const handleCardClick = () => {
-        navigate('/register-event-view'); 
+        navigate(`/register-event-view/${id}`);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Updated Full Name:", name);
-        console.log("Updated Email:", email);
-        setMessage('Registracija atnaujinta sėkmingai!');
+    
+        if (!userId || !id) {
+            setMessage('User ID or Event ID is missing.');
+            return;
+        }
+    
+        try {
+            const response = await updateRegistration(parseInt(userId), parseInt(id), sendReminders);
+    
+            if (response.status === 200) {
+                setMessage('Registracija sėkmingai atnaujinta!');
+            } else if (response.status === 201) {
+                setMessage('Nepavyko atnaujinti registracijos.');
+            } else {
+                setMessage('Nauja registracija sėkmingai sukurta!');
+            }
+        } catch (error) {
+            console.error('Error updating registration:', error);
+            setMessage('An error occurred while updating the registration.');
+        }
     };
+    
 
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100vh" padding={3}>
-            
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" minHeight="150vh" padding={3}>
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 3 }}>
                 <CardActionArea onClick={handleCardClick}>
                     <CardContent>
@@ -39,38 +59,28 @@ function UpdateEventRegistration() {
                 </CardActionArea>
             </Card>
 
-            
             <Typography variant="h4" component="h1" gutterBottom>
                 Atnaujinti registraciją į renginį
             </Typography>
             <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '300px' }}>
-                <TextField
-                    label="Vardas"
-                    variant="outlined"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    sx={{ marginBottom: 2 }}
-                />
-                <TextField
-                    label="El. paštas"
-                    variant="outlined"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    type="email"
-                    sx={{ marginBottom: 2 }}
+                
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={sendReminders}
+                            onChange={(e) => setSendReminders(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label="Receive Reminders"
                 />
                 <Button type="submit" variant="contained" color="primary" fullWidth>
                     Pakeisti registraciją
                 </Button>
             </form>
 
-            
             {message && (
-                <Typography variant="h6" sx={{ marginTop: 2, color: 'green', textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ marginTop: 2, color: message.includes('successfully') ? 'green' : 'red', textAlign: 'center' }}>
                     {message}
                 </Typography>
             )}
