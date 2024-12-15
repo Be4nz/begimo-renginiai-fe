@@ -84,3 +84,12 @@ export const fetchEventWeather = async (id) => {
     }
 };
 
+export const fetchDistances = async () => {
+    try {
+        const response = await axiosInstance.get('/event/distances');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching distances:', error.response?.data || error.message);
+        throw error;
+    }
+};

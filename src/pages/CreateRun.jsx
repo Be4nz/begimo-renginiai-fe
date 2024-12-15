@@ -14,7 +14,7 @@ import {
     InputLabel,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { postEvent, fetchCities } from '../api/eventAPI';
+import { postEvent, fetchCities, fetchDistances } from '../api/eventAPI';
 
 const cityCoordinates = {
     1: "54.8985,23.9036", // Kaunas
@@ -30,6 +30,8 @@ const cityCoordinates = {
 };
 
 const CreateRun = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
     const [formData, setFormData] = useState({
         pavadinimas: '',
         aprasymas: '',
@@ -41,24 +43,31 @@ const CreateRun = () => {
         adresas: '',
         privatus: false,
         nuotrauka: '',
-        koordinate: '', // Will be set automatically
+        koordinate: '',
         miestas_id: '',
+        distancija_id: '',
+        organizatorius_id: user,
     });
 
     const [cities, setCities] = useState([]);
     const navigate = useNavigate();
+    const [distances, setDistances] = useState([]);
 
     useEffect(() => {
-        const loadCities = async () => {
+        const loadInitialData = async () => {
             try {
-                const cities = await fetchCities();
-                setCities(cities);
+                const [citiesData, distancesData] = await Promise.all([
+                    fetchCities(),
+                    fetchDistances(),
+                ]);
+                setCities(citiesData);
+                setDistances(distancesData);
             } catch (error) {
-                console.error('Klaida gaunant miestus:', error);
-                alert('Nepavyko gauti miestų sąrašo.');
+                console.error('Error fetching cities or distances:', error);
+                alert('Nepavyko gauti miestų arba distancijų sąrašo.');
             }
         };
-        loadCities();
+        loadInitialData();
     }, []);
 
     const handleCancel = () => {
@@ -67,7 +76,7 @@ const CreateRun = () => {
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-
+    
         if (name === 'miestas_id') {
             const coordinates = cityCoordinates[value] || '';
             setFormData({
@@ -85,19 +94,21 @@ const CreateRun = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.miestas_id) {
-            alert('Prašome pasirinkti miestą.');
+    
+        if (!formData.miestas_id || !formData.distancija_id || !formData.organizatorius_id) {
+            alert('Prašome užpildyti visus privalomus laukus.');
             return;
         }
+    
         try {
             const response = await postEvent(formData);
-            console.log('Event created:', response);
-            alert('Bėgimas sukurtas sėkmingai!');
+            console.log('[DEBUG] Event created response:', response);
             navigate('/run-list');
         } catch (error) {
-            alert('Klaida kuriant bėgimą.');
+            console.error('[ERROR] Event creation failed:', error);
         }
     };
+        
 
     return (
         <Box
@@ -136,6 +147,24 @@ const CreateRun = () => {
                                 rows={3}
                                 required
                             />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="distance-label">Pasirinkite distanciją</InputLabel>
+                                <Select
+                                    labelId="distance-label"
+                                    name="distancija_id"
+                                    value={formData.distancija_id}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {distances.map((distance) => (
+                                        <MenuItem key={distance.id} value={distance.id}>
+                                            {distance.pavadinimas} ({distance.atstumas} km)
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Box>
                         <Box sx={{ mb: 3 }}>
                             <TextField

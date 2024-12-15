@@ -14,7 +14,7 @@ import {
     InputLabel,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchEventById, editEventById, fetchCities } from '../api/eventAPI';
+import { fetchEventById, editEventById, fetchCities, fetchDistances } from '../api/eventAPI';
 
 const cityCoordinates = {
     1: "54.8985,23.9036", // Kaunas
@@ -38,6 +38,7 @@ const formatDateForInput = (date) => {
 const EditRun = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [distances, setDistances] = useState([]);
     const [formData, setFormData] = useState({
         pavadinimas: '',
         aprasymas: '',
@@ -51,19 +52,22 @@ const EditRun = () => {
         nuotrauka: '',
         koordinate: '',
         miestas_id: '',
+        distancija_id: '',
     });
+    
 
     const [cities, setCities] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const loadEventAndCities = async () => {
+        const loadEventCitiesAndDistances = async () => {
             try {
-                const [eventData, cityList] = await Promise.all([
+                const [eventData, cityList, distanceList] = await Promise.all([
                     fetchEventById(id),
                     fetchCities(),
+                    fetchDistances(),
                 ]);
-
+    
                 setFormData({
                     pavadinimas: eventData.pavadinimas || '',
                     aprasymas: eventData.aprasymas || '',
@@ -77,23 +81,25 @@ const EditRun = () => {
                     nuotrauka: eventData.nuotrauka || '',
                     koordinate: eventData.koordinate || '',
                     miestas_id: eventData.miestas_id || '',
+                    distancija_id: eventData.distancija_id || '',
                 });
-
+    
                 setCities(cityList);
+                setDistances(distanceList);
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching event or cities:', error);
-                alert('Nepavyko gauti renginio arba miestų duomenų.');
+                console.error('Error fetching event, cities, or distances:', error);
+                alert('Nepavyko gauti renginio, miestų arba distancijų duomenų.');
                 navigate(`/run/${id}`);
             }
         };
-
-        loadEventAndCities();
+    
+        loadEventCitiesAndDistances();
     }, [id, navigate]);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
-
+    
         setFormData((prevData) => {
             if (name === 'miestas_id') {
                 const coordinates = cityCoordinates[value] || prevData.koordinate;
@@ -103,13 +109,14 @@ const EditRun = () => {
                     koordinate: coordinates,
                 };
             }
-
+    
             return {
                 ...prevData,
                 [name]: type === 'checkbox' ? checked : value,
             };
         });
     };
+    
 
     const handleCancel = () => {
         navigate(`/run/${id}`);
@@ -117,8 +124,8 @@ const EditRun = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.miestas_id) {
-            alert('Prašome pasirinkti miestą.');
+        if (!formData.miestas_id || !formData.distancija_id) {
+            alert('Prašome pasirinkti miestą ir distanciją.');
             return;
         }
         try {
@@ -127,9 +134,10 @@ const EditRun = () => {
             alert('Bėgimas atnaujintas sėkmingai!');
             navigate(`/run/${id}`);
         } catch (error) {
+            console.error('Error updating event:', error);
             alert('Klaida atnaujinant bėgimą.');
         }
-    };
+    };    
 
     if (loading) {
         return <Typography>Loading...</Typography>;
@@ -185,6 +193,24 @@ const EditRun = () => {
                                 onChange={handleInputChange}
                                 required
                             />
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="distance-label">Pasirinkite distanciją</InputLabel>
+                                <Select
+                                    labelId="distance-label"
+                                    name="distancija_id"
+                                    value={formData.distancija_id} // Bind to distancija_id
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {distances.map((distance) => (
+                                        <MenuItem key={distance.id} value={distance.id}>
+                                            {distance.pavadinimas} ({distance.atstumas} km)
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Box>
                         <Box sx={{ mb: 3 }}>
                             <TextField

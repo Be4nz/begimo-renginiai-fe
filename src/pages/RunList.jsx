@@ -3,46 +3,38 @@ import { Box, Typography, Card, Grid, CardActionArea, CardContent, CardMedia } f
 import { useNavigate } from 'react-router-dom';
 import { fetchPublicEvents } from '../api/eventAPI';
 import defaultImage from '../images/default.jpg';
-import { checkUserIsOrganizer } from '../api/userAPI';
+import { checkUserCanCreateEvent } from '../api/userAPI';
 
 function RunList() {
 	const [events, setEvents] = useState([]);
+	const [canCreateEvent, setCanCreateEvent] = useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-        const getEvents = async () => {
-            try {
-                const eventsData = await fetchPublicEvents();
-                setEvents(eventsData);
-            } catch (error) {
-                console.error('Error fetching public events:', error);
-            }
-        };
+		const getEventsAndPermissions = async () => {
+			try {
+				const eventsData = await fetchPublicEvents();
+				setEvents(eventsData);
 
-        getEvents();
-    }, []);
+				const user = JSON.parse(localStorage.getItem('user'));
+				if (user) {
+					const permission = await checkUserCanCreateEvent(user);
+					setCanCreateEvent(permission);
+				}
+			} catch (error) {
+				console.error('Error fetching public events or user permissions:', error);
+			}
+		};
+
+		getEventsAndPermissions();
+	}, []);
 
 	const handleCardClickRun = (id) => {
         navigate(`/run/${id}`);
     };
 
-	const handleCardClickCreate = async () => {
-		try {
-			const user = JSON.parse(localStorage.getItem('user'));
-	
-			console.log(user);
-			const isOrganizer = await checkUserIsOrganizer(user);
-	
-			if (!isOrganizer) {
-				alert('Only organizers can create events.');
-				return;
-			}
-	
-			navigate('/create-run/1');
-		} catch (error) {
-			console.error('Error checking organizer status:', error);
-			alert('Failed to verify organizer status. Please try again.');
-		}
+	const handleCardClickCreate = () => {
+		navigate('/create-run/1');
 	};
 
 	const handleCardClickInvite = () => {
@@ -129,22 +121,26 @@ function RunList() {
 					</CardContent>
 				</CardActionArea>
 			</Card>
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
-				<CardActionArea onClick={handleCardClickCreate}>
-					<CardContent>
-						<Typography
-							variant='h5'
-							component='div'
-							sx={{
-								textAlign: 'center',
-								fontWeight: 'bold',
-							}}
-						>
-							Kurti bėgimą
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-			</Card>
+			{canCreateEvent && (
+				<Card
+					sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}
+				>
+					<CardActionArea onClick={handleCardClickCreate}>
+						<CardContent>
+							<Typography
+								variant="h5"
+								component="div"
+								sx={{
+									textAlign: 'center',
+									fontWeight: 'bold',
+								}}
+							>
+								Kurti bėgimą
+							</Typography>
+						</CardContent>
+					</CardActionArea>
+				</Card>
+			)}
 			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
 				<CardActionArea onClick={handleCardClickUser}>
 					<CardContent>
