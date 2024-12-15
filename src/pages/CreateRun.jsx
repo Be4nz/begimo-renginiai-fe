@@ -14,7 +14,7 @@ import {
     InputLabel,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { postEvent, fetchCities, fetchDistances } from '../api/eventAPI';
+import { postEvent, fetchCities, fetchDistances, fetchDemographics } from '../api/eventAPI';
 
 const cityCoordinates = {
     1: "54.8985,23.9036", // Kaunas
@@ -46,22 +46,26 @@ const CreateRun = () => {
         koordinate: '',
         miestas_id: '',
         distancija_id: '',
+        demografija_id: '',
         organizatorius_id: user,
     });
 
     const [cities, setCities] = useState([]);
     const navigate = useNavigate();
     const [distances, setDistances] = useState([]);
+    const [demographics, setDemographics] = useState([]);
 
     useEffect(() => {
         const loadInitialData = async () => {
             try {
-                const [citiesData, distancesData] = await Promise.all([
+                const [citiesData, distancesData, demographicsData] = await Promise.all([
                     fetchCities(),
                     fetchDistances(),
+                    fetchDemographics(),
                 ]);
                 setCities(citiesData);
                 setDistances(distancesData);
+                setDemographics(demographicsData);
             } catch (error) {
                 console.error('Error fetching cities or distances:', error);
                 alert('Nepavyko gauti miestų arba distancijų sąrašo.');
@@ -218,6 +222,24 @@ const CreateRun = () => {
                                     {cities.map((city) => (
                                         <MenuItem key={city.id} value={city.id}>
                                             {city.pavadinimas}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Box sx={{ mb: 3 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="demografija-label">Pasirinkite demografiją</InputLabel>
+                                <Select
+                                    labelId="demografija-label"
+                                    name="demografija_id"
+                                    value={formData.demografija_id}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {demographics.map((demo) => (
+                                        <MenuItem key={demo.id} value={demo.id}>
+                                            {demo.pavadinimas}
                                         </MenuItem>
                                     ))}
                                 </Select>
