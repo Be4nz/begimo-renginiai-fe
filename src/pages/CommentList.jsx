@@ -60,7 +60,6 @@ function CommentList() {
         }
     };
 	
-	console.log(user);
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" padding={3}>
@@ -94,7 +93,6 @@ function CommentList() {
             </Card>
 
             {comments.map((comment) => {
-				console.log(comment.naudotojo_id); // Print comment.naudotojo_id(
 				return (
                 <Card key={comment.id} sx={{ maxWidth: 500, marginBottom: 2, padding: 2, boxShadow: 2 }}>
                     <Typography variant="body1" sx={{ marginBottom: 1 }}>

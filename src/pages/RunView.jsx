@@ -94,7 +94,9 @@ function RunView() {
     const handleMakeCommentClick = () => {
         navigate(`/make-comment/${runId}`);
     };
-
+    const handleMapClick = () => {
+        navigate(`/run/${id}/map`);
+    };
     if (loading) {
         return <Typography variant="h5">Kraunama...</Typography>;
     }
@@ -144,7 +146,19 @@ function RunView() {
                     </CardContent>
                 </CardActionArea>
             </Card>
-
+            <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
+                <CardActionArea onClick={handleMapClick}>
+                    <CardContent>
+                        <Typography
+                            variant="h5"
+                            component="div"
+                            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+                        >
+                            Žemėlapio peržiūra
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
             <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}>
                 <CardActionArea onClick={handleInviteClick}>
                     <CardContent>
