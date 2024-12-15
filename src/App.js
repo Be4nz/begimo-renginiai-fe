@@ -25,7 +25,8 @@ function App() {
 	return (
 		<div className='App'>
 			<Router>
-				<NavigationBar />
+			<NavigationBar />
+			{!localStorage.getItem('user') && !['/login', '/register'].includes(window.location.pathname) && !window.location.pathname.startsWith('/changepassword') && <Navigate to='/login' replace />}
 				<Routes>
 					<Route path='/login' element={<Login />} />
 					<Route path='/register-event' element={<EventRegistration/>}/>
