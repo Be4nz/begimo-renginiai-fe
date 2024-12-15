@@ -29,9 +29,9 @@ function App() {
 				<NavigationBar />
 				<Routes>
 					<Route path='/login' element={<Login />} />
-					<Route path='/register-event' element={<EventRegistration />} />
-					<Route path='/register-event-view' element={<EventRegistrationView />} />
-					<Route path='/update-event-registration' element={<UpdateEventRegistration />} />
+					<Route path='/register-event/:id' element={<EventRegistration />} />
+					<Route path='/register-event-view/:id' element={<EventRegistrationView />} />
+					<Route path='/update-event-registration/:id' element={<UpdateEventRegistration />} />
 					<Route path='/calendar' element={<Calendar />} />
 					<Route path='/make-comment/:id' element={<MakeCommentForm />} />
 					<Route path='/update-comment/:id' element={<UpdateCommentForm />} />
