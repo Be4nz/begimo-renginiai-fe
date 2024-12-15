@@ -14,16 +14,14 @@ function UpdateCommentForm() {
         const loadCommentDetails = async () => {
             try {
                 const fetchedComment = await getComment(commentId);
-                console.log(fetchedComment[0].naudotojo_id); // Fetch comment by ID
                 if (fetchedComment[0].naudotojo_id != user) {
-                    console.log("HAHAHAHAHA pagautas");
                     navigate('/login'); // Redirect to login if user doesn't match
                     return;
                 }
                 setComment(fetchedComment[0].tekstas);
                 setRenginioId(fetchedComment[0].renginio_id);
             } catch (error) {
-                console.error('Error fetching comment details:', error);
+                console.error('Klaida gaunant komentaro duomenis:', error);
                 navigate('/login'); // Redirect to login if there’s an error (e.g., unauthorized access)
             }
         };
@@ -39,15 +37,20 @@ function UpdateCommentForm() {
 
     const handleUpdateComment = async (e) => {
         e.preventDefault();
+        if (!comment) {
+            alert('Prašome įvesti komentarą.');
+            return;
+        }
         try {
             await updateComment(commentId, { tekstas: comment,
                 data: new Date().toISOString().split('T')[0], // Today's date
                 renginio_id: renginioId, 
                 naudotojo_id: user
              }); // Update the comment
+            alert('Komentaras sukurtas sėkmingai!');
             handleCardClick(); // Navigate back to comments after updating
         } catch (error) {
-            console.error('Error updating comment:', error);
+            console.error('Klaida atnaujinant komentarą:', error);
         }
     };
 

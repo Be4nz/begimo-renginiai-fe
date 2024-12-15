@@ -12,6 +12,7 @@ import NewPassword from './pages/NewPassword';
 import ChangePassword from './pages/ChangePassword';
 import CreateRun from './pages/CreateRun';
 import RunWheater from './pages/RunWheater';
+import RunMap from './pages/RunMap';
 import EditRun from './pages/EditRun';
 import InviteForm from './pages/InviteForm';
 import InviteList from './pages/InviteList';
@@ -46,6 +47,7 @@ function App() {
 					<Route path='/user/:id' element={<UserProfile />} />
 					<Route path='/run/:id/comments' element={<CommentList />} />
 					<Route path='/run/:id/weather' element={<RunWheater />} />
+					<Route path='/run/:id/map' element={<RunMap />} />
 					<Route path='/changepassword/:id/' element={<NewPassword />} />
 					<Route path='/invite-form/:id' element={<InviteForm />} />
 					<Route path='/invite-list' element={<InviteList />} />

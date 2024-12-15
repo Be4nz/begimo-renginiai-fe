@@ -21,17 +21,16 @@ function MakeCommentForm() {
         try {
             const commentData = {
 				tekstas: comment,
-				data: new Date().toISOString().split('T')[0], // Today's date
-				// Hardcoded recipient ID (replace with dynamic ID based on email lookup)
+				data: new Date().toISOString().split('T')[0], 
 				renginio_id: runId, 
-                autoriaus_id: user, // Hardcoded event ID (replace with dynamic selection if available)
+                autoriaus_id: user, 
 			};
             const response = await createComment(commentData);
-            console.log('Event created:', response);
             alert('Komentaras sukurtas sėkmingai!');
             navigate(`/run/${runId}/comments`);
         } catch (error) {
-            alert('Klaida kuriant bėgimą.');
+            console.log(error);
+            alert('Klaida kuriant komentarą.');
         }
         navigate(`/run/${runId}/comments`);
     };
