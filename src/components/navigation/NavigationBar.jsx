@@ -9,7 +9,8 @@ function NavigationBar() {
 	const [showAll, setShowAll] = useState(false);
 
 	return (
-		<AppBar position='static'>
+		<>
+			{localStorage.getItem('user') && <AppBar position='static'>
 			<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 				<Button onClick={() => navigate('/run-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
 					Bėgimai
@@ -61,7 +62,8 @@ function NavigationBar() {
 					{showAll ? 'Rodyti mažiau' : 'Rodyti visas navigacijas'}
 				</Button>
 			</Box>
-		</AppBar>
+		</AppBar>}
+		</>
 	);
 }
 
