@@ -110,23 +110,6 @@ function RunList() {
                     </Grid>
                 ))}
             </Grid>
-
-			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2}}>
-				<CardActionArea onClick={handleCardClickRegister}>
-					<CardContent>
-						<Typography
-							variant='h5'
-							component='div'
-							sx={{
-								textAlign: 'center',
-								fontWeight: 'bold',
-							}}
-						>
-							Registracija
-						</Typography>
-					</CardContent>
-				</CardActionArea>
-			</Card>
 			{canCreateEvent && (
 				<Card
 					sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}
