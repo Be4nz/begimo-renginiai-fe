@@ -166,7 +166,7 @@ function RunList() {
 									fontWeight: 'bold',
 								}}
 							>
-								Kurti bėgimą
+								Kurti renginį
 							</Typography>
 						</CardContent>
 					</CardActionArea>
