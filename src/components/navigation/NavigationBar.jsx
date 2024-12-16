@@ -20,12 +20,6 @@ function NavigationBar() {
 				</Button>
 					{showAll && (
 					<>
-						<Button onClick={() => navigate('/run/1')} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Bėgimas
-						</Button>
-						<Button onClick={() => navigate('/run/1/comments')} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Bėgimo komentarai
-						</Button>
 						{localStorage.getItem('token') ? 
 						<>
 						<Button onClick={() => {
