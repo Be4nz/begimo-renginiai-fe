@@ -9,10 +9,12 @@ function EventRegistration() {
     const [sendReminders, setSendReminders] = useState(false);
     const [message, setMessage] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
+    //const [email, setEmail] = useState('');
 
     const userId = localStorage.getItem('user'); // User ID stored in localStorage
-    const userEmail = localStorage.getItem('userEmail'); // Assuming you also store the user's email in localStorage
+   // const userEmail = localStorage.getItem('userEmail'); // Assuming you also store the user's email in localStorage
 
+    
     const handleCardClick = () => {
         navigate(`/register-event-view/${id}`);
     };
@@ -24,22 +26,29 @@ function EventRegistration() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        
         if (!userId || !id) {
             setMessage('User ID or Event ID is missing.');
             return;
         }
 
+       
+    
         try {
             const response = await registerUser(
                 parseInt(userId), // Pass userId as an integer
                 parseInt(id), // Pass eventId as an integer
                 sendReminders // Boolean value for reminders
             );
-await addEventToGoogleCalendar(parseInt(id), userEmail, sendReminders);
+            console.log('User registered:', response);
+
+            await addEventToGoogleCalendar(parseInt(id), sendReminders);
+
 
             setMessage('Registration Successful! Event added to your Google Calendar.');
         } catch (error) {
             console.error('Error registering user:', error);
+            console.error('Full error object:', error);
             const errorMessage = error.response?.data?.message || 'An error occurred while registering.';
             setMessage(errorMessage);
         }
