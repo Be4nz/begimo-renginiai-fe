@@ -18,6 +18,16 @@ function Register() {
 		console.log('Email:', email);
 		console.log('Password:', password);
 
+		if (!username || !email || !password) {
+			alert('Visi laukai turi būti užpildyti');
+			return;
+		}
+
+		if (email.indexOf('@') === -1) {
+			alert('Neteisingas el. pašto adresas');
+			return;
+		}
+
 		fetch('http://localhost:5000/user/register', {
 			method: 'POST',
 			headers: {

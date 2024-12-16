@@ -12,12 +12,15 @@ function UserProfile() {
 	const [profile, setProfile] = useState({});
 	const [runningStatistics, setRunningStatistics] = useState({});
 	const [loading, setLoading] = useState(true);
+	const [runningStatisticsLoading, setRunningStatisticsLoading] = useState(false);
 
 	const userId = useParams().id;
 	const currentUserId = localStorage.getItem('user');
 
 	React.useEffect(() => {
-		getRunningStatistics();
+		if (runningStatisticsLoading) {
+			getRunningStatistics();
+		}
 		fetch(`http://localhost:5000/user/get/${userId}`, {
 			method: 'GET',
 			headers: {
@@ -39,7 +42,7 @@ function UserProfile() {
 					alert('Klaida: ' + error.message);
 				}
 			});
-	}, [userId]);
+	}, [userId, runningStatisticsLoading]);
 
 	const getRunningStatistics = () => {
 		fetch(`http://localhost:5000/user/getstats/${userId}`, {
@@ -72,6 +75,15 @@ function UserProfile() {
 					updatedProfile[key] = null;
 				}
 			});
+
+			if (updatedProfile.email && !updatedProfile.email.includes('@')) {
+				alert('Neteisingas el. pašto formatas');
+				return;
+			}
+			if (updatedProfile.slapyvardis && updatedProfile.slapyvardis.length < 3) {
+				alert('Slapyvardis turi būti bent 3 simbolių ilgio');
+				return;
+			}
 
 			fetch(`http://localhost:5000/user/update/${userId}`, {
 				method: 'PUT',
@@ -311,7 +323,18 @@ function UserProfile() {
 				<></>
 			)}
 
-			{runningStatistics && (
+			{!runningStatisticsLoading && (
+				<Button
+					style={{ marginBottom: '3em' }}
+					variant='contained'
+					color='primary'
+					onClick={() => setRunningStatisticsLoading(true)}
+					sx={{ marginTop: 2 }}
+				>
+					Gauti bėgimo statistika
+				</Button>
+			)}
+			{(runningStatistics && runningStatisticsLoading) && (
 				<Box
 					sx={{
 						width: '100%',
