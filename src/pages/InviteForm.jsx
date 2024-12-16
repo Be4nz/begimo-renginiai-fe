@@ -16,7 +16,7 @@ function InviteForm() {
 	const { id } = useParams();
 
 	const handleCardClick = () => {
-		navigate('/run/1');
+		navigate(`/run/${id}`);
 	};
 
 	const handleEmailChange = (event) => {
