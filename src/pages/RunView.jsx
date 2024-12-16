@@ -124,7 +124,9 @@ function RunView() {
     <Typography variant="h6"><strong>Koordinatės:</strong> {eventDetails.koordinate}</Typography>
     <Typography variant="h6"><strong>Miestas:</strong> {eventDetails.miestas_pavadinimas}</Typography>
     <Typography variant="h6"><strong>Distancija:</strong> {eventDetails.distancija_pavadinimas} ({eventDetails.distancija_atstumas} km)</Typography>
-    <Typography variant="h6"><strong>Organizatorius ID:</strong> {eventDetails.organizatorius_id}</Typography>
+    <Typography variant="h6">
+        <strong>Organizatoriaus el. paštas:</strong> {eventDetails.organizatorius_el_pastas}
+    </Typography>
 
     {eventDetails.demografija_pavadinimas && (
         <>
