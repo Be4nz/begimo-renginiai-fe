@@ -113,6 +113,7 @@ function UserProfile() {
 
 	return (
 		<Box
+			sx={{ paddingTop: isEditing ? '10em' : '0' }}
 			display='flex'
 			flexDirection='column'
 			alignItems='center'
