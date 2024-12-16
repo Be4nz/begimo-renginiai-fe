@@ -50,6 +50,14 @@ function RunList() {
             alert('Naudotojas nerastas. Prašome prisijungti iš naujo.');
         }
 	};
+
+	const handleLogoutButtonClick = () => {
+		localStorage.removeItem('user');
+		localStorage.removeItem('full_user');
+		localStorage.removeItem('token');
+		localStorage.removeItem('role');
+		navigate('/login');
+	};
 	
 	const handleCardClickRegister = () => {
 		navigate('/register');
@@ -110,6 +118,40 @@ function RunList() {
                     </Grid>
                 ))}
             </Grid>
+
+			{/* <Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2}}>
+				<CardActionArea onClick={handleCardClickRegister}>
+					<CardContent>
+						<Typography
+							variant='h5'
+							component='div'
+							sx={{
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}
+						>
+							Registracija
+						</Typography>
+					</CardContent>
+				</CardActionArea>
+			</Card> */}
+
+			<Card sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2}}>
+				<CardActionArea onClick={handleLogoutButtonClick}>
+					<CardContent>
+						<Typography
+							variant='h5'
+							component='div'
+							sx={{
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}
+						>
+							Atsijungti
+						</Typography>
+					</CardContent>
+				</CardActionArea>
+			</Card>
 			{canCreateEvent && (
 				<Card
 					sx={{ maxWidth: 300, borderRadius: 2, boxShadow: 3, marginBottom: 2 }}
@@ -124,7 +166,7 @@ function RunList() {
 									fontWeight: 'bold',
 								}}
 							>
-								Kurti renginį
+								Kurti bėgimą
 							</Typography>
 						</CardContent>
 					</CardActionArea>

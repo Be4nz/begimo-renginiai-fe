@@ -13,7 +13,7 @@ function NavigationBar() {
 			{localStorage.getItem('user') && <AppBar position='static'>
 			<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 				<Button onClick={() => navigate('/run-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
-					Pagrindinis langas
+					Bėgimai
 				</Button>
 				<Button onClick={() => navigate('/invite-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
 					Pakvietimai
@@ -30,7 +30,7 @@ function NavigationBar() {
 								navigate('/login');
 							}
 						}} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Naudotojo profilis
+							Vartotojo profilis
 						</Button>
 						<Button onClick={() => {
 							localStorage.removeItem('user');
