@@ -49,28 +49,29 @@ export const updateRegistration = async (userId, eventId, sendReminders) => {
 
 // Function to delete a registration
 export const deleteRegistration = async (registrationId, userId) => {
-    try {
-        const response = await axiosInstance.delete(`/register/registrations/${registrationId}`, { // Use axiosInstance instead of API_URL
-            data: { userId }
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error deleting registration:', error);
-        throw error; // Propagate error to be handled in the component
+
+    const response = await fetch(`/api/registrations/${registrationId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete registration');
     }
+
+    return await response.json();
 };
 
-// Function to add an event to the user's Google Calendar
-export const addEventToGoogleCalendar = async (eventId, email, sendReminders) => {
+export const addEventToGoogleCalendar = async (eventId, sendReminders) => {
     try {
-        const response = await axiosInstance.post(`/register/add-event-to-calendar`, {
-            eventId,
-            email,
-            send_reminders: sendReminders
-        });
+        const response = await axios.post('/register/add-event-to-calendar', { eventId, sendReminders });
+        console.log('Google Calendar response:', response);
         return response.data;
     } catch (error) {
         console.error('Error adding event to Google Calendar:', error);
-        throw error;
+        throw error; // Rethrow to propagate the error
     }
 };

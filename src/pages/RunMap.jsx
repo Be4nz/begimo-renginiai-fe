@@ -19,7 +19,7 @@ const RunMap = () => {
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: '', // Replace with your API key
+        googleMapsApiKey: 'AIzaSyBrEAY-m9MCNyidH79DIjcgYRqQBYYn6HQ', // Replace with your API key
     });
 
     const [map, setMap] = useState(null);
