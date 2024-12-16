@@ -116,7 +116,7 @@ const RunWeather = () => {
                 onClick={handleBackClick}
                 sx={{ marginTop: 3 }}
             >
-                Atgal į bėgimą
+                Atgal į renginį
             </Button>
         </Box>
     );

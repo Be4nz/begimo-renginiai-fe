@@ -309,7 +309,7 @@ const CreateRun = () => {
                                 fullWidth
                                 sx={{ padding: 1 }}
                             >
-                                Sukurti bėgimą
+                                Sukurti renginį
                             </Button>
                             <Button
                                 type="button"

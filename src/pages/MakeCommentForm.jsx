@@ -48,7 +48,7 @@ function MakeCommentForm() {
 								fontWeight: 'bold',
 							}}
 						>
-							Atgal į bėgimą
+							Atgal į renginį
 						</Typography>
 					</CardContent>
 				</CardActionArea>

@@ -13,7 +13,7 @@ function NavigationBar() {
 			{localStorage.getItem('user') && <AppBar position='static'>
 			<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 				<Button onClick={() => navigate('/run-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
-					Bėgimai
+					Pagrindinis langas
 				</Button>
 				<Button onClick={() => navigate('/invite-list')} sx={{ my: 2, color: 'white', display: 'block' }}>
 					Pakvietimai
