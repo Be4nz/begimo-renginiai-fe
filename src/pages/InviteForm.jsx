@@ -103,7 +103,7 @@ function InviteForm() {
 					Pakvietimas
 				</Typography>
 				<TextField
-					label='Kviečiamo vartotojo el. paštas'
+					label='Kviečiamo naudotojo el. paštas'
 					variant='outlined'
 					fullWidth
 					multiline

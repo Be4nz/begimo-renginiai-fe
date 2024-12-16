@@ -30,7 +30,7 @@ function NavigationBar() {
 								navigate('/login');
 							}
 						}} sx={{ my: 2, color: 'white', display: 'block' }}>
-							Vartotojo profilis
+							Naudotojo profilis
 						</Button>
 						<Button onClick={() => {
 							localStorage.removeItem('user');
