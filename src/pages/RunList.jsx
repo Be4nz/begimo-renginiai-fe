@@ -10,6 +10,7 @@ function RunList() {
 	const [canCreateEvent, setCanCreateEvent] = useState(false);
 	const navigate = useNavigate();
 
+
 	useEffect(() => {
 		const getEventsAndPermissions = async () => {
 			try {
@@ -42,7 +43,12 @@ function RunList() {
 	};
 	
 	const handleCardClickUser = () => {
-		navigate('/user/1');
+		const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            navigate(`/user/${user}`);
+        } else {
+            alert('Naudotojas nerastas. Prašome prisijungti iš naujo.');
+        }
 	};
 	
 	const handleCardClickRegister = () => {
