@@ -75,13 +75,13 @@ function UserProfile() {
 					updatedProfile[key] = null;
 				}
 			});
-
-			if (updatedProfile.email && !updatedProfile.email.includes('@')) {
+			console.log(updatedProfile.el_pastas);
+			if (!updatedProfile.el_pastas || profile.el_pastas.indexOf('@') === -1) {
 				alert('Neteisingas el. pašto formatas');
 				return;
 			}
-			if (updatedProfile.slapyvardis && updatedProfile.slapyvardis.length < 3) {
-				alert('Slapyvardis turi būti bent 3 simbolių ilgio');
+			if (!updatedProfile.slapyvardis) {
+				alert('turi buti ivestas slapyvardis');
 				return;
 			}
 
